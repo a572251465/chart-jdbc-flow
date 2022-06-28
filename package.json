@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "yarn start",
+    "start": "yarn serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
@@ -10,7 +12,9 @@
     "core-js": "^3.8.3",
     "echarts": "^5.3.3",
     "element-plus": "^2.2.6",
-    "vue": "^3.2.13"
+    "pinia": "^2.0.14",
+    "vue": "^3.2.13",
+    "vue-router": "^4.0.16"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
