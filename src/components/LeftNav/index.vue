@@ -1,37 +1,83 @@
 <script lang="ts" setup>
-// 表示导航列表内容
-const navList = [
-  {
-    type: 'database',
-    icon: 'icon-shujuyuan',
-    tips: '配置数据源'
-  },
-  {
-    type: 'drag',
-    icon: 'icon-tuozhuai',
-    tips: '拖拽图表'
-  },
-  {
-    type: 'setting',
-    icon: 'icon-shezhi',
-    tips: '预设置'
-  }
-]
+import {
+  navList,
+  skipPageHandle,
+  configureDbShowFlag,
+  navTransformShowFlag
+} from './left-nav'
+import ConfigureDataBase from '@/components/ConfigureDataBase/index.vue'
+import { onBeforeMount, onMounted } from 'vue'
+import { bindDom } from '@/utils'
+import { INormalFn } from '@/types'
+// 卸载绑定事件
+let onBindDom: null | INormalFn = null
+
+onMounted(() => {
+  onBindDom = bindDom(
+    window,
+    'dblclick',
+    (...args) => {
+      const event = args[0] as any as MouseEvent
+      if (
+        navTransformShowFlag.value ||
+        event.x > 60 ||
+        (event.target as HTMLDivElement).className.includes('leftNav')
+      )
+        return
+
+      navTransformShowFlag.value = true
+    },
+    { isThrottle: false }
+  )!
+})
+
+onBeforeMount(() => typeof onBindDom === 'function' && onBindDom())
 </script>
 
 <template>
-  <div class="leftNav">
-    <ul>
-      <li v-for="item in navList" :key="item.type">
-        <el-tooltip :content="item.tips" placement="top">
-          <i class="iconfont" :class="item.icon"></i>
-        </el-tooltip>
-      </li>
-    </ul>
-  </div>
+  <transition name="fade">
+    <div
+      class="leftNav"
+      v-show="navTransformShowFlag"
+      @dblclick.stop="navTransformShowFlag = false"
+    >
+      <ul>
+        <li v-for="item in navList" :key="item.type">
+          <el-tooltip :content="item.tips" placement="top">
+            <i
+              class="iconfont"
+              :class="item.icon"
+              @click="skipPageHandle(item.type)"
+            ></i>
+          </el-tooltip>
+        </li>
+      </ul>
+    </div>
+  </transition>
+
+  <!-- 配置数据源弹框 -->
+  <ConfigureDataBase v-model="configureDbShowFlag" />
 </template>
 
 <style lang="less" scoped>
+/* 动画区域 */
+@keyframes fade-in {
+  from {
+    width: 0px;
+  }
+  to {
+    width: 60px;
+  }
+}
+
+.fade-enter-active {
+  animation: fade-in 0.2s ease-in-out normal forwards;
+}
+
+.fade-leave-active {
+  animation: fade-in 0.2s ease-in-out forwards reverse;
+}
+
 .leftNav {
   width: 60px;
   height: 100%;
