@@ -1,0 +1,33 @@
+.drag-left {
+  width: 200px;
+  height: 100%;
+  background: #1b1c1f;
+
+  ul {
+    overflow: hidden;
+
+    li {
+      padding: 0 20px;
+      margin-top: 20px;
+
+      img {
+        width: 100%;
+        cursor: move;
+        border: 1px dashed transparent;
+
+        &:hover {
+          border: 1px dashed #0b71e6;
+        }
+      }
+    }
+  }
+}
+
+.drag-right {
+  flex: 1;
+
+  &-container {
+    background: url("@/assets/images/canvas-bg.svg");
+    height: 100%;
+  }
+}
