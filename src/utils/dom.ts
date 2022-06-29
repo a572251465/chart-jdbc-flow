@@ -9,8 +9,7 @@ type IBindDomOptions = Partial<{
   )
 
 const defaultValues = {
-  isThrottle: true,
-  throttleTime: 300,
+  isThrottle: false,
   isBubbling: true
 } as IBindDomOptions
 

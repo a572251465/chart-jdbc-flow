@@ -19,5 +19,16 @@ const showFlag = computed<boolean>({
 </script>
 
 <template>
-  <el-drawer v-model="showFlag"></el-drawer>
+  <el-drawer v-model="showFlag" :with-header="false" :size="400">
+    <div class="configure-database">
+
+      <el-radio-group size="large">
+        <el-radio-button label="Mysql" />
+        <el-radio-button label="Mysql" />
+        <el-radio-button label="Los Mysql" />
+        <el-radio-button label="Mysql" />
+      </el-radio-group>
+    </div>
+
+  </el-drawer>
 </template>
