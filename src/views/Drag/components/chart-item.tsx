@@ -18,10 +18,10 @@ export default defineComponent({
     const curBlockItem = computed(() => props.block)
     // 计算样式
     const curStyles = computed(() => ({
-      width: curBlockItem.value?.width,
-      height: curBlockItem.value?.height,
-      top: curBlockItem.value?.top,
-      left: curBlockItem.value?.left,
+      width: `${curBlockItem.value?.width}px`,
+      height: `${curBlockItem.value?.height}px`,
+      top: `${curBlockItem.value?.top}px`,
+      left: `${curBlockItem.value?.left}px`,
       zIndex: curBlockItem.value?.zIndex
     }))
 
