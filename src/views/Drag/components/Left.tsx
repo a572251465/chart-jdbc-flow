@@ -1,6 +1,6 @@
 import { defineComponent, reactive } from 'vue'
 import './index.less'
-import dataConfig from '@/views/Drag/dataConfig'
+import dataConfig from '@/views/Drag/initial-data'
 
 // 表示图表数据
 const chartData = reactive(dataConfig)
