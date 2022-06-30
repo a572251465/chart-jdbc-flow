@@ -1,4 +1,4 @@
-import { computed, defineComponent, PropType } from 'vue'
+import { computed, defineComponent, onMounted, PropType, ref } from 'vue'
 import { IBlockItem } from '@/types'
 import { ElSkeleton } from 'element-plus'
 import './index.less'
@@ -10,7 +10,8 @@ export default defineComponent({
   props: {
     // 传递的内容
     block: {
-      type: Object as PropType<IBlockItem>
+      type: Object as PropType<IBlockItem>,
+      default: () => ({})
     }
   },
   setup(props) {
@@ -24,9 +25,29 @@ export default defineComponent({
       left: `${curBlockItem.value?.left}px`,
       zIndex: curBlockItem.value?.zIndex
     }))
+    // 表示当前渲染的block
+    const currentBlockRef = ref<HTMLDivElement | null>(null)
+
+    /**
+     * @author lihh
+     * @description 设置元素居中处理
+     */
+    const elAlignCenterHandle = () => {
+      if (!currentBlockRef.value) return
+
+      const { offsetWidth, offsetHeight } =
+        currentBlockRef.value as HTMLDivElement
+      curBlockItem.value!.left = curBlockItem.value?.left - offsetWidth / 2
+      curBlockItem.value!.top = curBlockItem.value?.top - offsetHeight / 2
+      curBlockItem.value!.alignCenter = false
+    }
+
+    onMounted(() => {
+      if (curBlockItem.value?.alignCenter) elAlignCenterHandle()
+    })
 
     return () => (
-      <div class="editor-item" style={curStyles.value}>
+      <div class="editor-item" style={curStyles.value} ref={currentBlockRef}>
         <ElSkeleton rows={5} animated={true} />
       </div>
     )

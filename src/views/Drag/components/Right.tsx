@@ -1,12 +1,8 @@
 import { computed, defineComponent, onMounted, PropType, ref } from 'vue'
 import './index.less'
 import ChartItem from '@/views/Drag/components/chart-item'
-import baseInfo from '../editor-data'
 import { setCurrentEditorDrag } from '@/utils'
 import { IBlockItem } from '@/types'
-
-// 基础数据
-const blockItems = ref(baseInfo)
 
 export default defineComponent({
   components: {
@@ -38,8 +34,8 @@ export default defineComponent({
     return () => (
       <div class="drag-right">
         <div class="drag-right-container" ref={editorRef}>
-          {allBlockItem.value.map((item, key) => (
-            <ChartItem key={key} block={item} />
+          {allBlockItem.value.map((item) => (
+            <ChartItem key={item.createDomId} block={item} />
           ))}
         </div>
       </div>

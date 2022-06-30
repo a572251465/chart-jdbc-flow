@@ -2,6 +2,7 @@ import type { WritableComputedRef } from 'vue'
 import { IBlockItem, IInitialBlockItem } from '@/types'
 import { defaultBlockItem } from '@/views/Drag/editor-data'
 import { genKey, getCurrentEditorDrag } from '@/utils'
+import deepcopy from 'deepcopy'
 
 /**
  * @author lihh
@@ -32,7 +33,7 @@ export const useEditorDrag = (
     if (!currentMoveComponent) return
 
     // 生成新的block
-    const newBlock: IBlockItem = Object.assign({}, defaultBlockItem, {
+    const newBlock: IBlockItem = Object.assign({}, deepcopy(defaultBlockItem), {
       createDomId: genKey(),
       top: e.offsetY,
       left: e.offsetX,
@@ -40,7 +41,7 @@ export const useEditorDrag = (
     } as Partial<IBlockItem>)
 
     // 给数组中添加新的block
-    allBlockItem.value = [newBlock, ...allBlockItem.value]
+    allBlockItem.value = [newBlock, ...deepcopy(allBlockItem.value)]
   }
 
   /**

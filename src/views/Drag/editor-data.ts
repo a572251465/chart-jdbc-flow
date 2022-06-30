@@ -9,28 +9,31 @@ export const defaultBlockItem: IBlockItem = {
   left: 0,
   createDomId: genKey(),
   type: 'broken',
-  zIndex: 10
+  zIndex: 10,
+  alignCenter: true
 }
 
 const blocks: IBlockItem[] = [
-  {
-    width: 200,
-    height: 200,
-    top: 0,
-    left: 0,
-    createDomId: genKey(),
-    type: 'broken',
-    zIndex: 10
-  },
-  {
-    width: 200,
-    height: 200,
-    top: 200,
-    left: 200,
-    createDomId: genKey(),
-    type: 'column',
-    zIndex: 10
-  }
+  // {
+  //   width: 200,
+  //   height: 200,
+  //   top: 0,
+  //   left: 0,
+  //   createDomId: genKey(),
+  //   type: 'broken',
+  //   zIndex: 10,
+  //   alignCenter: false
+  // },
+  // {
+  //   width: 200,
+  //   height: 200,
+  //   top: 200,
+  //   left: 200,
+  //   createDomId: genKey(),
+  //   type: 'column',
+  //   zIndex: 10,
+  //   alignCenter: false
+  // }
 ]
 
 export default blocks

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import Left from './components/Left'
 import Right from './components/Right'
 import defaultBlocks from './editor-data'
@@ -7,14 +7,6 @@ import { IBlockItem } from '@/types'
 
 // 表示所有的block item
 const allBlockItem = ref<IBlockItem[]>(defaultBlocks)
-
-watch(
-  allBlockItem,
-  (value) => {
-    console.log(value)
-  },
-  { deep: true }
-)
 </script>
 
 <template>
