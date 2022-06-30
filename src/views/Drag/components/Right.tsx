@@ -10,6 +10,8 @@ import './index.less'
 import ChartItem from '@/views/Drag/components/chart-item'
 import { bindDom, setCurrentEditorDrag } from '@/utils'
 import { IBlockItem, INormalFn } from '@/types'
+import { useFocusAboutBlock } from '@/hook/useFocusAboutBlock'
+import { useBlockDragMove } from '@/hook/useBlockDragMove'
 
 export default defineComponent({
   components: {
@@ -36,55 +38,20 @@ export default defineComponent({
     // 表示解绑事件
     let unBindDom: INormalFn | null = null
 
-    /**
-     * @author lihh
-     * @description 清除所有光标选中状态
-     */
-    const clearAllBlockFocusState = (...args: any[]) => {
-      // 通过手动筛选 设置默认事件
-      if (args.length > 0) {
-        const e = args[0] as PointerEvent
-        if (e && typeof e === 'object' && Reflect.has(e, 'path')) {
-          const paths = (
-            Array.isArray((e as any).path) ? (e as any).path : []
-          ) as HTMLDivElement[]
-          for (let i = 0; i < paths.length; i++)
-            if ((paths[i].className || '').includes('editor-single-block-item'))
-              return
-        }
-      }
-      allBlockItem.value?.forEach((item) => {
-        item.isFocus = false
+    // 筛选光标选中 以及非选中状态
+    const { focusData, singleBlockClickHandle, clearAllBlockFocusState } =
+      useFocusAboutBlock(allBlockItem, (e: MouseEvent) => {
+        mouseDown(e)
       })
-    }
 
-    /**
-     * @author lihh
-     * @description 单个图表点击事件
-     * @param e 鼠标事件对象
-     * @param blockRef 图表ref 数据
-     */
-    const singleBlockClickHandle = (e: MouseEvent, blockRef: IBlockItem) => {
-      const isShiftKeySelected = e.shiftKey
-
-      // 判断是否选中shift key
-      if (isShiftKeySelected) {
-        blockRef.isFocus = !blockRef.isFocus
-      } else {
-        if (blockRef.isFocus) {
-          blockRef.isFocus = false
-        } else {
-          clearAllBlockFocusState()
-          blockRef.isFocus = true
-        }
-      }
-    }
+    // 表示鼠标按下 移动事件
+    const { mouseDown } = useBlockDragMove(focusData)
 
     onMounted(() => {
       setCurrentEditorDrag(editorRef.value!)
 
       // bind window click event，when clicking body, cancel all block focus state
-      unBindDom = bindDom(window, 'click', (...args) =>
+      unBindDom = bindDom(window, 'mousedown', (...args) =>
         clearAllBlockFocusState(...args)
       )!
     })

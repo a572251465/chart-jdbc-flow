@@ -26,7 +26,7 @@ export default defineComponent({
     })
 
     // 实现图表的拖拽
-    const [dragStart, dragEnd] = useEditorDrag(allBlockItem)
+    const { dragStart, dragEnd } = useEditorDrag(allBlockItem)
 
     return () => (
       <div class="drag-left">
@@ -38,7 +38,7 @@ export default defineComponent({
                 alt="物料"
                 draggable
                 onDragstart={(e) => dragStart(e, component)}
-                onDragend={(e) => dragEnd(e, component)}
+                onDragend={dragEnd}
               />
             </li>
           ))}

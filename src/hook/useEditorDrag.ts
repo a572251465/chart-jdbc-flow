@@ -77,5 +77,5 @@ export const useEditorDrag = (
     currentMoveComponent = null
   }
 
-  return [dragStart, dragEnd]
+  return { dragStart, dragEnd }
 }

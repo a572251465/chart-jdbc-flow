@@ -68,7 +68,7 @@ export default defineComponent({
         }
         style={curStyles.value}
         ref={currentBlockRef}
-        onClick={(e) => singleBlockClickHandle(e)}>
+        onMousedown={(e) => singleBlockClickHandle(e)}>
         <ElSkeleton rows={5} animated={true} />
       </div>
     )
