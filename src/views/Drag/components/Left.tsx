@@ -1,8 +1,8 @@
 import { computed, defineComponent, PropType, reactive } from 'vue'
 import './index.less'
 import dataConfig from '@/views/Drag/initial-data'
-import { dragStart, dragEnd } from './eidtor-drag'
 import { IBlockItem } from '@/types'
+import { useEditorDrag } from '@/hook/useEditorDrag'
 
 // 表示图表数据
 const chartData = reactive(dataConfig)
@@ -25,15 +25,7 @@ export default defineComponent({
       }
     })
 
-    /**
-     * @author lihh
-     * @description 设置新的block
-     * @param newComponent
-     */
-    const setBlockHandle = (newComponent: IBlockItem) => {
-      const newBlocks = [newComponent, ...allBlockItem.value]
-      allBlockItem.value = newBlocks
-    }
+    const [dragStart, dragEnd] = useEditorDrag(allBlockItem)
 
     return () => (
       <div class="drag-left">
@@ -44,8 +36,8 @@ export default defineComponent({
                 src={component.icon}
                 alt="物料"
                 draggable
-                onDragstart={(e) => dragStart(e, component, setBlockHandle)}
-                onDragend={dragEnd}
+                onDragstart={(e) => dragStart(e, component)}
+                onDragend={(e) => dragEnd(e, component)}
               />
             </li>
           ))}
