@@ -10,7 +10,8 @@ export const defaultBlockItem: IBlockItem = {
   createDomId: genKey(),
   type: 'broken',
   zIndex: 10,
-  alignCenter: true
+  alignCenter: true,
+  isFocus: false
 }
 
 const blocks: IBlockItem[] = [

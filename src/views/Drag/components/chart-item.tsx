@@ -14,7 +14,8 @@ export default defineComponent({
       default: () => ({})
     }
   },
-  setup(props) {
+  emits: ['singleBlockClick'],
+  setup(props, { emit }) {
     // 当前图表信息
     const curBlockItem = computed(() => props.block)
     // 计算样式
@@ -42,12 +43,32 @@ export default defineComponent({
       curBlockItem.value!.alignCenter = false
     }
 
+    /**
+     * @author lihh
+     * @description 点击图表事件
+     */
+    const singleBlockClickHandle = (e: MouseEvent) => {
+      // 取消默认事件
+      e.preventDefault()
+      e.stopPropagation()
+
+      emit('singleBlockClick', e, curBlockItem.value)
+    }
+
     onMounted(() => {
       if (curBlockItem.value?.alignCenter) elAlignCenterHandle()
     })
 
     return () => (
-      <div class="editor-item" style={curStyles.value} ref={currentBlockRef}>
+      <div
+        class={
+          curBlockItem.value?.isFocus
+            ? 'editor-single-block-item editor-item-focus'
+            : 'editor-single-block-item'
+        }
+        style={curStyles.value}
+        ref={currentBlockRef}
+        onClick={(e) => singleBlockClickHandle(e)}>
         <ElSkeleton rows={5} animated={true} />
       </div>
     )

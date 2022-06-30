@@ -25,6 +25,7 @@ export default defineComponent({
       }
     })
 
+    // 实现图表的拖拽
     const [dragStart, dragEnd] = useEditorDrag(allBlockItem)
 
     return () => (

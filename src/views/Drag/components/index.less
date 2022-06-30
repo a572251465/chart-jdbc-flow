@@ -27,12 +27,17 @@
   flex: 1;
 
   &-container {
-    background: url("@/assets/images/canvas-bg.svg");
+    background: url('@/assets/images/canvas-bg.svg');
     height: 100%;
     position: relative;
   }
 }
 
-.editor-item {
+.editor-single-block-item {
   position: absolute;
+  border: 1px solid transparent;
+}
+
+.editor-item-focus {
+  border: 1px dashed #0b71e6;
 }

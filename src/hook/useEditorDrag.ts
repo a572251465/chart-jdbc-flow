@@ -33,7 +33,7 @@ export const useEditorDrag = (
     if (!currentMoveComponent) return
 
     // 生成新的block
-    const newBlock: IBlockItem = Object.assign({}, deepcopy(defaultBlockItem), {
+    const newBlock: IBlockItem = Object.assign({}, defaultBlockItem, {
       createDomId: genKey(),
       top: e.offsetY,
       left: e.offsetX,
