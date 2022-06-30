@@ -20,8 +20,7 @@ const dragLeave = (e: DragEvent) => {
   e.dataTransfer!.dropEffect = 'none'
 }
 // 松手时 根据拖拽的组件 添加一个组件
-const drag = (e: DragEvent) => {
-  console.log('11111')
+const drop = (e: DragEvent) => {
   // 如果没有移动的组件 || 添加的事件 直接返回
   if (!currentMoveComponent || !currentAddBlockHandle) return
 
@@ -34,10 +33,6 @@ const drag = (e: DragEvent) => {
   } as Partial<IBlockItem>)
 
   typeof currentAddBlockHandle === 'function' && currentAddBlockHandle(newBlock)
-
-  // 初期化
-  currentMoveComponent = null
-  currentAddBlockHandle = null
 }
 
 /**
@@ -58,5 +53,23 @@ export const dragStart = (
   editorRef.addEventListener('dragenter', dragEnter)
   editorRef.addEventListener('dragover', dragOver)
   editorRef.addEventListener('dragleave', dragLeave)
-  editorRef.addEventListener('drag', drag)
+  editorRef.addEventListener('drop', drop)
+}
+
+/**
+ * @author lihh
+ * @description 事件解除绑定
+ */
+export const dragEnd = () => {
+  const editorRef = getCurrentEditorDrag()!
+
+  // 移除事件
+  editorRef.removeEventListener('dragenter', dragEnter)
+  editorRef.removeEventListener('dragover', dragOver)
+  editorRef.removeEventListener('dragleave', dragLeave)
+  editorRef.removeEventListener('drop', drop)
+
+  // 初期化
+  currentAddBlockHandle = null
+  currentMoveComponent = null
 }

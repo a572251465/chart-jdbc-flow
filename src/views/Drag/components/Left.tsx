@@ -1,7 +1,7 @@
 import { computed, defineComponent, PropType, reactive } from 'vue'
 import './index.less'
 import dataConfig from '@/views/Drag/initial-data'
-import { dragStart } from './eidtor-drag'
+import { dragStart, dragEnd } from './eidtor-drag'
 import { IBlockItem } from '@/types'
 
 // 表示图表数据
@@ -45,6 +45,7 @@ export default defineComponent({
                 alt="物料"
                 draggable
                 onDragstart={(e) => dragStart(e, component, setBlockHandle)}
+                onDragend={dragEnd}
               />
             </li>
           ))}
