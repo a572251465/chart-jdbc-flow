@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import Route from '@/route'
+import Store from '@/store'
 import ElementPlus from '@/plugins/elements'
 
 import '@/assets/css/common.less'
@@ -10,5 +11,6 @@ import '@/hook/useGlobal'
 
 const root = createApp(App)
 root.use(Route)
+root.use(Store)
 root.use(ElementPlus)
 root.mount('#app')

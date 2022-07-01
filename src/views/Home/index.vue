@@ -16,8 +16,13 @@ import LeftNav from '@/components/LeftNav/index.vue'
 <style lang="less" scoped>
 @import '@/assets/css/constant.less';
 
+.home-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .home-container-body {
-  height: calc(100% - @headHeight);
+  flex: 1;
   display: flex;
   justify-content: flex-start;
 }
