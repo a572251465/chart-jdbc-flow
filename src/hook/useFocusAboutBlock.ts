@@ -1,5 +1,8 @@
-import { computed, WritableComputedRef } from 'vue'
+import { computed, WritableComputedRef, ref } from 'vue'
 import { IBlockItem, INormalFn } from '@/types'
+
+// 最后一个被选中的block
+const lastSelectedBlockId = ref<string>('')
 
 /**
  * @author lihh
@@ -22,6 +25,13 @@ export const useFocusAboutBlock = (
       unFocusBlocks
     }
   })
+
+  // 表示选中的最后一个block
+  const lastSelectedBlock = computed(() =>
+    allBlockItem.value.find(
+      (item) => item.createDomId === lastSelectedBlockId.value
+    )
+  )
 
   /**
    * @author lihh
@@ -56,18 +66,29 @@ export const useFocusAboutBlock = (
 
     // judge whether shift key is selected
     if (isShiftKeySelected) {
-      blockRef.isFocus = !blockRef.isFocus
-    } else {
-      if (blockRef.isFocus) {
-        blockRef.isFocus = false
+      if (focusData.value.focusBlocks.length <= 1) {
+        blockRef.isFocus = true
       } else {
+        blockRef.isFocus = !blockRef.isFocus
+      }
+    } else {
+      if (!blockRef.isFocus) {
         clearAllBlockFocusState()
         blockRef.isFocus = true
       }
     }
 
+    // 设置最后一个选中的id
+    lastSelectedBlockId.value = blockRef.isFocus ? blockRef.createDomId : ''
+
     callback && callback(e)
   }
 
-  return { focusData, singleBlockClickHandle, clearAllBlockFocusState }
+  return {
+    focusData,
+    singleBlockClickHandle,
+    clearAllBlockFocusState,
+    lastSelectedBlock,
+    lastSelectedBlockId
+  }
 }
