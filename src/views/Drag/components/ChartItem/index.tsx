@@ -61,7 +61,11 @@ export default defineComponent({
      * @param e 事件对象
      */
     const dragBlockRightMenuHandle = (e: MouseEvent) => {
-      emit('singleBlockRightMenu', e, curBlockItem.value)
+      // 禁止默认事件
+      e.preventDefault()
+      e.stopPropagation()
+      
+      emit('singleBlockRightMenu', e)
     }
 
     onMounted(() => {

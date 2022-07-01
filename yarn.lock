@@ -5636,6 +5636,11 @@ vary@~1.1.2:
   resolved "https://registry.npmmirror.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
+vu-design-plus@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/vu-design-plus/-/vu-design-plus-1.0.14.tgz#898c78aed9809bd27c5be2d1edd8b6cee8bf08c6"
+  integrity sha512-fBMpA1MtFHp+MiDm7w+6+faUoRR4GRk2k93FOUsNwg4rmjBPGrjY2c5ok783XS/o7hOkAVkasljbydL51q8ouA==
+
 vue-demi@*:
   version "0.13.1"
   resolved "https://registry.npmmirror.com/vue-demi/-/vue-demi-0.13.1.tgz#7604904c88be338418a10abbc94d5b8caa14cb8c"

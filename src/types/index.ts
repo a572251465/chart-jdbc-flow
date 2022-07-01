@@ -17,7 +17,7 @@ export type IBlockItem = {
   // 被创建图表的id
   createDomId: string
   // 是否要求居中
-  alignCenter: boolean,
+  alignCenter: boolean
   // 表示是否被选中
   isFocus: boolean
 }

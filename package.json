@@ -16,6 +16,7 @@
     "element-plus": "^2.2.6",
     "pinia": "^2.0.14",
     "pinia-plugin-persist": "^1.0.0",
+    "vu-design-plus": "^1.0.14",
     "vue": "^3.2.13",
     "vue-router": "^4.0.16"
   },

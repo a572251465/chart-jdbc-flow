@@ -6,6 +6,7 @@ import ElementPlus from '@/plugins/elements'
 
 import '@/assets/css/common.less'
 import '@/assets/css/element-plus.css'
+import 'vu-design-plus/theme-chalk/css/index.css'
 
 import '@/hook/useGlobal'
 
