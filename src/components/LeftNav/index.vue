@@ -6,11 +6,22 @@ import {
   navTransformShowFlag
 } from './left-nav'
 import ConfigureDataBase from '@/components/ConfigureDataBase/index.vue'
-import { onBeforeMount, onMounted } from 'vue'
+import { onBeforeMount, onMounted, watch } from 'vue'
 import { bindDom } from '@/utils'
 import { INormalFn } from '@/types'
+import { useGlobalStore } from '@/store/GlobalStore'
 // 卸载绑定事件
 let onBindDom: null | INormalFn = null
+// 表示store 仓库
+const store = useGlobalStore()
+
+// 监听全屏变化
+watch(
+  () => store.isFullScreen,
+  (value: boolean) => {
+    if (!value) navTransformShowFlag.value = true
+  }
+)
 
 onMounted(() => {
   onBindDom = bindDom(
@@ -21,7 +32,8 @@ onMounted(() => {
       if (
         navTransformShowFlag.value ||
         event.x > 60 ||
-        (event.target as HTMLDivElement).className.includes('leftNav')
+        (event.target as HTMLDivElement).className.includes('leftNav') ||
+        store.isFullScreen
       )
         return
 
@@ -38,7 +50,7 @@ onBeforeMount(() => typeof onBindDom === 'function' && onBindDom())
   <transition name="fade">
     <div
       class="leftNav"
-      v-show="navTransformShowFlag"
+      v-show="navTransformShowFlag && !store.isFullScreen"
       @dblclick.stop="navTransformShowFlag = false"
     >
       <ul>
