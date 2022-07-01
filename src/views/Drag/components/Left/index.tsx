@@ -1,5 +1,5 @@
 import { computed, defineComponent, PropType, reactive } from 'vue'
-import './index.less'
+import '@/views/Drag/components/index.less'
 import dataConfig from '@/views/Drag/initial-data'
 import { IBlockItem } from '@/types'
 import { useEditorDrag } from '@/hook/useEditorDrag'

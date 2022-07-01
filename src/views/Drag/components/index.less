@@ -45,6 +45,30 @@
       border-top: 1px dashed #ff4d4f;
     }
   }
+
+  &-contextmenu-panel {
+    width: 120px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 4000;
+
+    ul {
+      background: #282a2e;
+      color: #ffffff;
+      font-size: 12px;
+      text-align: left;
+
+      li {
+        padding: 5px 5px 5px 10px;
+        cursor: pointer;
+
+        &:hover {
+          background: #35373a;
+        }
+      }
+    }
+  }
 }
 
 .editor-single-block-item {

@@ -94,7 +94,6 @@ onBeforeMount(() => typeof onBindDom === 'function' && onBindDom())
   width: 60px;
   height: 100%;
   background: rgba(23, 24, 26, 0.8);
-  border-radius: 0 10px 10px 0;
 
   ul {
     display: flex;

@@ -1,7 +1,7 @@
 import { computed, defineComponent, onMounted, PropType, ref } from 'vue'
 import { IBlockItem } from '@/types'
 import { ElSkeleton } from 'element-plus'
-import './index.less'
+import '@/views/Drag/components/index.less'
 
 export default defineComponent({
   components: {
@@ -14,7 +14,7 @@ export default defineComponent({
       default: () => ({})
     }
   },
-  emits: ['singleBlockClick'],
+  emits: ['singleBlockClick', 'singleBlockRightMenu'],
   setup(props, { emit }) {
     // 当前图表信息
     const curBlockItem = computed(() => props.block)
@@ -55,12 +55,22 @@ export default defineComponent({
       emit('singleBlockClick', e, curBlockItem.value)
     }
 
+    /**
+     * @author lihh
+     * @description 图表右击事件处理
+     * @param e 事件对象
+     */
+    const dragBlockRightMenuHandle = (e: MouseEvent) => {
+      emit('singleBlockRightMenu', e, curBlockItem.value)
+    }
+
     onMounted(() => {
       if (curBlockItem.value?.alignCenter) elAlignCenterHandle()
     })
 
     return () => (
       <div
+        onContextmenu={(e) => dragBlockRightMenuHandle(e)}
         class={
           curBlockItem.value?.isFocus
             ? 'editor-single-block-item editor-item-focus'
