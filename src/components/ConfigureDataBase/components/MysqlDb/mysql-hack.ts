@@ -9,9 +9,9 @@ type IProps = {
 // 表示db信息
 const dbInfo = reactive({
   host: 'localhost',
-  user: 'root',
-  password: '',
-  database: '',
+  user: 'uino@root',
+  password: 'uino@root',
+  database: 'chart-jdbc-flow',
   port: '3306'
 })
 // 表示校验规则

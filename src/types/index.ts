@@ -26,3 +26,9 @@ export type IInitialBlockItem = {
   type: string
   icon: any
 }
+
+export interface ICommonReq<T> {
+  code: number
+  message: string
+  data: T
+}
