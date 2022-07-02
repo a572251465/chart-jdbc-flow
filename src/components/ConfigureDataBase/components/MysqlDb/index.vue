@@ -16,7 +16,8 @@ const {
   dbInfo,
   ruleFormRef,
   rules,
-  isDbConnect
+  isDbConnect,
+  setMockDataHandle
 } = mysqlHack(props)
 </script>
 
@@ -55,6 +56,9 @@ const {
           >连接
         </el-button>
         <el-button @click="clearFormInfo(ruleFormRef)">重置</el-button>
+        <el-button link type="primary" @click="setMockDataHandle"
+          >模拟接口
+        </el-button>
       </el-form-item>
     </el-form>
   </div>

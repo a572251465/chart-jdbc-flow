@@ -32,3 +32,11 @@ export interface ICommonReq<T> {
   message: string
   data: T
 }
+
+export interface IDbConfigInfo {
+  host: string
+  user: string
+  password: string
+  database: string
+  port: number
+}

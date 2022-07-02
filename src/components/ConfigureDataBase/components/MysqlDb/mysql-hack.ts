@@ -1,18 +1,27 @@
 import { computed, reactive, ref, watch } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import { useGlobalStore } from '@/store/GlobalStore'
+import { IDbConfigInfo } from '@/types'
+import { useDbStore } from '@/store/DbStore'
 
 type IProps = {
   readonly type: string
 }
 
-// 表示db信息
-const dbInfo = reactive({
+const mockData: IDbConfigInfo = {
   host: 'localhost',
   user: 'uino@root',
   password: 'uino@root',
   database: 'chart-jdbc-flow',
-  port: '3306'
+  port: 3306
+}
+
+// 表示db信息
+const dbInfo = reactive<IDbConfigInfo>({
+  host: '',
+  user: '',
+  password: '',
+  database: '',
+  port: 3306
 })
 // 表示校验规则
 const rules = reactive<FormRules>({
@@ -54,17 +63,29 @@ const clearFormInfo = (formEl: FormInstance | undefined) => {
 
 /**
  * @author lihh
+ * @description 设置模拟数据
+ */
+const setMockDataHandle = () => {
+  const { host, user, password, database, port } = mockData
+  dbInfo.host = host
+  dbInfo.user = user
+  dbInfo.password = password
+  dbInfo.database = database
+  dbInfo.port = port
+}
+
+/**
+ * @author lihh
  * @description 文件mysqlDb中 setup函数内容抽离
  * @param props 表示传递参数类型
  */
 export const mysqlHack = (props: IProps) => {
   // 表示pina store
-  const store = useGlobalStore()
+  const store = useDbStore()
   // 监听tab切换
   watch(
     () => props.type,
     (value: string) => {
-      console.log(value)
       if (value === 'Mysql') clearFormInfo(ruleFormRef.value)
     }
   )
@@ -77,6 +98,7 @@ export const mysqlHack = (props: IProps) => {
     ruleFormRef,
     commitFormInfo,
     clearFormInfo,
-    isDbConnect
+    isDbConnect,
+    setMockDataHandle
   }
 }
