@@ -13,6 +13,7 @@ import { useBlockDragMove } from '@/hook/useBlockDragMove'
 import { bindDom, setCurrentEditorDrag } from '@/utils'
 import { VuMessageBox } from 'vu-design-plus'
 import { ElNotification } from 'element-plus'
+import { useDbStore } from '@/store/DbStore'
 
 export const enum IContextMenuEnum {
   DEL = 'del',
@@ -64,11 +65,24 @@ const batchDelBlocksHandle = (
   })
 }
 
+/**
+ * @author lihh
+ * @description 表示配置数据源
+ */
+const configureDataSourceHandle = () => {
+  // 判断是否连接数据库
+  const store = useDbStore()
+  if (!store.isDbConnect) {
+    ElNotification.error('请先点击左侧导航，配置数据源')
+    return
+  }
+}
+
 // 调度方法 策略模式
 const dispatcherStrategy: Record<IContextMenuEnum, INormalFn> = {
   [IContextMenuEnum.DEL]: batchDelBlocksHandle,
   [IContextMenuEnum.Copy]: () => {},
-  [IContextMenuEnum.DB]: () => {}
+  [IContextMenuEnum.DB]: configureDataSourceHandle
 }
 
 /**

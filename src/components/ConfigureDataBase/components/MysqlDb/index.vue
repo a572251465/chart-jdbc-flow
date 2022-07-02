@@ -53,9 +53,7 @@ const {
         <el-input v-model="dbInfo.port" />
       </el-form-item>
       <el-form-item>
-        <el-button
-          type="primary"
-          @click="commitFormInfo(ruleFormRef)"
+        <el-button type="primary" @click="commitFormInfo(ruleFormRef)"
           >{{ loadingFlags ? '校验中' : '连接' }}
         </el-button>
         <el-button @click="clearFormInfo(ruleFormRef)">重置</el-button>
@@ -64,6 +62,13 @@ const {
         </el-button>
       </el-form-item>
     </el-form>
+    <el-alert
+      title="友情提示"
+      type="warning"
+      :closable="false"
+      description="如果数据库处于连接状态，无需再次点击连接. 但是可以切换数据源"
+      show-icon
+    />
   </div>
 </template>
 

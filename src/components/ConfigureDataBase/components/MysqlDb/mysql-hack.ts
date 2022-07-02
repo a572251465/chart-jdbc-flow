@@ -64,32 +64,30 @@ const commitFormEditStoreCallback = (tables: ITable[]) => {
  * @description 提交表单信息
  * @param formEl 表单实例
  */
-const commitFormInfo = (isDbConnect: ComputedRef<boolean>) => {
-  return async (formEl: FormInstance | undefined) => {
-    // 如果表单实例为空 && 已经连接db时
-    if (!formEl || isDbConnect.value) return
+const commitFormInfo = async (formEl: FormInstance | undefined) => {
+  // 如果表单实例为空 && 已经连接db时
+  if (!formEl) return
 
-    loadingFlags.value = true
-    // 进行数据请求
-    const dbConnectCallback = async () => {
-      const res = await dbConnectReq(dbInfo)
+  loadingFlags.value = true
+  // 进行数据请求
+  const dbConnectCallback = async () => {
+    const res = await dbConnectReq(dbInfo)
 
-      loadingFlags.value = false
-      if (res.code !== 200) {
-        ElNotification.error('连接失败')
-        console.error(JSON.stringify(res.message))
-        return
-      }
-
-      ElNotification.success('连接成功')
-      commitFormEditStoreCallback(res.data)
+    loadingFlags.value = false
+    if (res.code !== 200) {
+      ElNotification.error('连接失败')
+      console.error(JSON.stringify(res.message))
+      return
     }
 
-    await formEl.validate(async (valid) => {
-      if (!valid) return
-      await dbConnectCallback()
-    })
+    ElNotification.success('连接成功')
+    commitFormEditStoreCallback(res.data)
   }
+
+  await formEl.validate(async (valid) => {
+    if (!valid) return
+    await dbConnectCallback()
+  })
 }
 
 /**
@@ -137,7 +135,7 @@ export const mysqlHack = (props: IProps) => {
     dbInfo,
     rules,
     ruleFormRef,
-    commitFormInfo: commitFormInfo(isDbConnect),
+    commitFormInfo,
     clearFormInfo,
     isDbConnect,
     setMockDataHandle,

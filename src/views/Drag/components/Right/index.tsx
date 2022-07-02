@@ -65,7 +65,7 @@ export default defineComponent({
               复制
             </li>
             <li onClick={(e) => dispatcherHandle(e, IContextMenuEnum.DB)}>
-              配置数据源
+              数据联动
             </li>
           </ul>
         </div>
