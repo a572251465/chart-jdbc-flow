@@ -17,7 +17,8 @@ const {
   ruleFormRef,
   rules,
   isDbConnect,
-  setMockDataHandle
+  setMockDataHandle,
+  loadingFlags
 } = mysqlHack(props)
 </script>
 
@@ -52,8 +53,10 @@ const {
         <el-input v-model="dbInfo.port" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="commitFormInfo(ruleFormRef)"
-          >连接
+        <el-button
+          type="primary"
+          @click="commitFormInfo(ruleFormRef)"
+          >{{ loadingFlags ? '校验中' : '连接' }}
         </el-button>
         <el-button @click="clearFormInfo(ruleFormRef)">重置</el-button>
         <el-button link type="primary" @click="setMockDataHandle"

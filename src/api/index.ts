@@ -1,5 +1,6 @@
 import api from './base/request'
 import { ICommonReq } from '@/types'
+import { ITable } from '@/store/DbStore'
 
 export type ILoginDbInfo = {
   host: string
@@ -15,7 +16,7 @@ export type ILoginDbInfo = {
  * @param dbConfigInfo 表示DB 的配置信息
  */
 export const dbConnectReq = (dbConfigInfo: ILoginDbInfo) =>
-  api.Post<ICommonReq<{ tableName: string }[]>>('/public/connect', dbConfigInfo)
+  api.Post<ICommonReq<ITable[]>>('public/connect', dbConfigInfo)
 
 /**
  * @author lihh
@@ -24,7 +25,7 @@ export const dbConnectReq = (dbConfigInfo: ILoginDbInfo) =>
  */
 export const tableInFieldReq = (table: string) =>
   api.Post<ICommonReq<{ fieldName: string; fieldComment: string }[]>>(
-    '/public/tableAllField',
+    'public/tableAllField',
     { table }
   )
 
@@ -36,4 +37,4 @@ export const tableInFieldReq = (table: string) =>
 export const getDataByTableReq = (dbNeedInfo: {
   table: string
   fields: string[]
-}) => api.Post<ICommonReq<any>>('/public/getDataByTable', dbNeedInfo)
+}) => api.Post<ICommonReq<any>>('public/getDataByTable', dbNeedInfo)

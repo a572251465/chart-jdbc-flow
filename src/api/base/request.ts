@@ -28,7 +28,9 @@ const request = <T>(params: IOptions): Promise<T> =>
       method,
       url,
       body = {},
-      header = new Headers(),
+      header = new Headers({
+        'Content-Type': 'application/json'
+      }),
       extendFields = {}
     } = params
 

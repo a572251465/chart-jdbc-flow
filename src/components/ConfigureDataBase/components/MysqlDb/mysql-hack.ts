@@ -1,7 +1,9 @@
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, ComputedRef, reactive, ref, watch } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { IDbConfigInfo } from '@/types'
-import { useDbStore } from '@/store/DbStore'
+import { ITable, useDbStore } from '@/store/DbStore'
+import { dbConnectReq } from '@/api'
+import { ElNotification } from 'element-plus'
 
 type IProps = {
   readonly type: string
@@ -37,18 +39,57 @@ const rules = reactive<FormRules>({
 })
 // form表单实例
 const ruleFormRef = ref<FormInstance>()
+// 表示加载中状态
+const loadingFlags = ref<boolean>(false)
+
+/**
+ * @author lihh
+ * @description 提交表单成功后 回调修改store仓库
+ * @param tables 获取的数据库中的表
+ */
+const commitFormEditStoreCallback = (tables: ITable[]) => {
+  const store = useDbStore()
+
+  store.editStoreField({
+    isDbConnect: true,
+    mysqlConfigInfo: {
+      ...store.mysqlConfigInfo,
+      tables
+    }
+  })
+}
 
 /**
  * @author lihh
  * @description 提交表单信息
  * @param formEl 表单实例
  */
-const commitFormInfo = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+const commitFormInfo = (isDbConnect: ComputedRef<boolean>) => {
+  return async (formEl: FormInstance | undefined) => {
+    // 如果表单实例为空 && 已经连接db时
+    if (!formEl || isDbConnect.value) return
 
-  await formEl.validate((valid) => {
-    if (!valid) return
-  })
+    loadingFlags.value = true
+    // 进行数据请求
+    const dbConnectCallback = async () => {
+      const res = await dbConnectReq(dbInfo)
+
+      loadingFlags.value = false
+      if (res.code !== 200) {
+        ElNotification.error('连接失败')
+        console.error(JSON.stringify(res.message))
+        return
+      }
+
+      ElNotification.success('连接成功')
+      commitFormEditStoreCallback(res.data)
+    }
+
+    await formEl.validate(async (valid) => {
+      if (!valid) return
+      await dbConnectCallback()
+    })
+  }
 }
 
 /**
@@ -96,9 +137,10 @@ export const mysqlHack = (props: IProps) => {
     dbInfo,
     rules,
     ruleFormRef,
-    commitFormInfo,
+    commitFormInfo: commitFormInfo(isDbConnect),
     clearFormInfo,
     isDbConnect,
-    setMockDataHandle
+    setMockDataHandle,
+    loadingFlags
   }
 }
