@@ -1,12 +1,13 @@
 import {
   ElTooltip,
   ElDrawer,
-  ElRadioGroup,
-  ElRadioButton,
   ElInput,
   ElForm,
   ElFormItem,
-  ElButton
+  ElButton,
+  ElTabs,
+  ElTabPane,
+  ElResult
 } from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
@@ -17,12 +18,13 @@ type IComponentType = typeof ElTooltip
 const components = [
   ElTooltip,
   ElDrawer,
-  ElRadioGroup,
-  ElRadioButton,
   ElInput,
   ElForm,
   ElFormItem,
-  ElButton
+  ElButton,
+  ElTabs,
+  ElTabPane,
+  ElResult
 ] as IComponentType[]
 
 export default (app: App) => {

@@ -1,3 +1,7 @@
 .el-skeleton {
-    --el-skeleton-color: #0b71e6;
+  --el-skeleton-color: #0b71e6;
+}
+
+.el-drawer {
+  --el-drawer-padding-primary: 20px 10px;
 }
