@@ -9,7 +9,11 @@ import {
   ElTabPane,
   ElResult,
   ElProgress,
-  ElAlert
+  ElAlert,
+  ElSelect,
+  ElOption,
+  ElCheckbox,
+  ElCheckboxGroup, ElScrollbar
 } from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
@@ -28,7 +32,12 @@ const components = [
   ElTabPane,
   ElResult,
   ElProgress,
-  ElAlert
+  ElAlert,
+  ElSelect,
+  ElOption,
+  ElCheckbox,
+  ElCheckboxGroup,
+  ElScrollbar
 ] as IComponentType[]
 
 export default (app: App) => {

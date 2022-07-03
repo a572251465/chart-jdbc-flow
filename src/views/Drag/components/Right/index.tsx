@@ -1,6 +1,7 @@
 import { defineComponent, PropType } from 'vue'
 import '@/views/Drag/components/index.less'
 import ChartItem from '@/views/Drag/components/ChartItem'
+import DataLinkage from '@/components/DataLinkage/index.vue'
 import { IBlockItem } from '@/types'
 import {
   IContextMenuEnum,
@@ -9,7 +10,8 @@ import {
 
 export default defineComponent({
   components: {
-    ChartItem
+    ChartItem,
+    DataLinkage
   },
   props: {
     // 传递的参数
@@ -69,6 +71,9 @@ export default defineComponent({
             </li>
           </ul>
         </div>
+
+      {/*  数据联动弹框部分 */}
+        <DataLinkage />
       </div>
     )
   }

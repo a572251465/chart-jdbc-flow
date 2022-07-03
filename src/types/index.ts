@@ -1,4 +1,13 @@
+import { ITableFiled } from '@/store/DbStore'
+
 export type INormalFn = (...args: any[]) => void
+
+// 表示图表 联动关联配置
+export type IDbLinkageAbout = {
+  table: string
+  tableField: ITableFiled[]
+  loopCounter: number
+}
 
 // 每个图片的类型
 export type IBlockItem = {
@@ -20,6 +29,7 @@ export type IBlockItem = {
   alignCenter: boolean
   // 表示是否被选中
   isFocus: boolean
+  dbAbout?: IDbLinkageAbout
 }
 
 export type IInitialBlockItem = {
