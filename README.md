@@ -1,19 +1,37 @@
-# chart-jdbc-flow
+## 图表/ JDBC BI 联动
 
-## Project setup
-```
-yarn install
-```
+> 旨在可以自由拖拽图表/ 表格。 通过数据进行驱动。驱动方式有三种：自定义数据库，mock 平台数据，请求连接
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+> 更多的是模仿该司`森大屏工具`等。 实现最大能力的核心还原
 
-### Compiles and minifies for production
-```
-yarn build
-```
+### 代码
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- [平台代码](https://github.com/a572251465/chart-jdbc-flow)
+- [后端模拟](https://github.com/a572251465/chart-jdbc-flow-db)
+
+### 使用技术
+
+- 基础知识
+- vue3
+- ts
+- 拖拽相关知识
+- MySQL 部分知识
+- node 知识
+- 微前端
+- 消息通道知识
+
+### 开发任务
+
+- [X] 实现基本布局
+- [X] 实现拖拽功能
+- [X] 实现辅助线
+- [X] 实现图表 单个/多个删除
+- [ ] 实现图表 单个/多个复制
+- [X] 配置连接Mysql数据源
+- [ ] 实现Mock系统
+- [ ] 对接Mock系统，实现数据刷新
+- [ ] 实现图表 置上/ 置下功能
+- [ ] 实现图表拖拽变大功能
+- [ ] 实现图表实时预览
+- [ ] 实现图片code 编写
+- [ ] 实现全预览模式
