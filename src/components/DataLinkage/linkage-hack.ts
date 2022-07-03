@@ -1,12 +1,60 @@
-import { computed } from 'vue'
-import { useDbStore } from '@/store/DbStore'
+import { computed, reactive, ref } from 'vue'
+import { ITableFiled, useDbStore } from '@/store/DbStore'
+import { IDbLinkageAbout } from '@/types'
+import { tableInFieldReq } from '@/api'
+import { ElNotification } from 'element-plus'
 
 type IProps = {
   modelValue: boolean | undefined
 }
+type INewTableField = Omit<IDbLinkageAbout, 'tableField'> & {
+  tableField: string[]
+}
 
 interface IEmits {
   (event: 'update:modelValue', ...args: any[]): void
+}
+
+// 表示配置数据源一些信息
+const dataSourceInfo = reactive<INewTableField>({
+  table: '',
+  tableField: [],
+  loopCounter: 1,
+  loopTime: 1
+})
+// 表示表属性信息
+const tableFieldInfos = ref<ITableFiled[]>([])
+
+/**
+ * @author lihh
+ * @description table发生变化 change事件
+ * @param table 表名
+ */
+const tableChangeHandle = async (table: string) => {
+  // 先从缓存中查找
+  const { mysqlConfigInfo, editStoreField } = useDbStore()
+  // 表 跟 字段的对应关系
+  const tableInField = mysqlConfigInfo.tableInField || {}
+  // 如果存在的话 直接使用缓存
+  if (Reflect.has(tableInField, table)) {
+    tableFieldInfos.value = tableInField[table]
+    return
+  }
+
+  // 进行数据请求
+  const res = await tableInFieldReq(table)
+  if (res.code !== 200) {
+    ElNotification.error('查询失败')
+    console.error(res.message)
+    return
+  }
+
+  tableFieldInfos.value = res.data
+  // 将内容保存到缓存
+  tableInField[table] = res.data
+  editStoreField({
+    mysqlConfigInfo: { ...mysqlConfigInfo, tableInField }
+  })
 }
 
 /**
@@ -30,6 +78,9 @@ export const linkageHack = (props: IProps, emits: IEmits) => {
 
   return {
     showFlag,
-    tableList
+    tableList,
+    dataSourceInfo,
+    tableChangeHandle,
+    tableFieldInfos
   }
 }

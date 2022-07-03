@@ -5,13 +5,19 @@ import { linkageHack } from '@/components/DataLinkage/linkage-hack'
 const props = defineProps({
   modelValue: {
     type: Boolean,
-    default: true
+    default: false
   }
 })
 const emits = defineEmits(['update:modelValue'])
 
 // 表示导出数据
-const { showFlag, tableList } = linkageHack(props, emits)
+const {
+  showFlag,
+  tableList,
+  dataSourceInfo,
+  tableChangeHandle,
+  tableFieldInfos
+} = linkageHack(props, emits)
 </script>
 
 <template>
@@ -24,7 +30,12 @@ const { showFlag, tableList } = linkageHack(props, emits)
     <el-result icon="success" title="配置数据源" />
     <div class="step">DB 表</div>
     <div class="container">
-      <el-select placeholder="请选择表" size="large">
+      <el-select
+        placeholder="请选择表"
+        size="large"
+        @change="tableChangeHandle"
+        v-model="dataSourceInfo.table"
+      >
         <el-option
           v-for="(item, key) in tableList"
           :key="key"
@@ -37,15 +48,13 @@ const { showFlag, tableList } = linkageHack(props, emits)
     <div class="container">
       <div class="checkbox-container">
         <el-scrollbar>
-          <el-checkbox-group>
-            <el-checkbox label="Option A" />
-            <el-checkbox label="Option B" />
-            <el-checkbox label="Option C" />
-            <el-checkbox label="Option C" />
-            <el-checkbox label="Option C" />
-            <el-checkbox label="Option C" />
-            <el-checkbox label="Option C" />
-            <el-checkbox label="Option C" />
+          <el-checkbox-group v-model="dataSourceInfo.tableField">
+            <el-checkbox
+              v-for="item in tableFieldInfos"
+              :key="item.fieldName"
+              :label="item.fieldName"
+              >{{ item.fieldComment }}
+            </el-checkbox>
           </el-checkbox-group>
         </el-scrollbar>
       </div>
@@ -53,12 +62,33 @@ const { showFlag, tableList } = linkageHack(props, emits)
     <div class="step">其他设置</div>
     <div class="container">
       <div class="part">
-        <span>请求频次</span>
-        <el-input type="number" placeholder="请输入请求频次" clearable />
+        <span>请求次数</span>
+        <el-input
+          type="number"
+          v-model="dataSourceInfo.loopCounter"
+          placeholder="请输入请求频次"
+          clearable
+        />
         <el-tooltip
           placement="top"
           effect="dark"
           content="什么是请求频次呢？可以模拟请求，按照个数不停的请求"
+        >
+          <div class="flags">?</div>
+        </el-tooltip>
+      </div>
+      <div class="part">
+        <span>频次间隔(s)</span>
+        <el-input
+          type="number"
+          v-model="dataSourceInfo.loopTime"
+          placeholder="请输入频次间隔(以秒为单位)"
+          clearable
+        />
+        <el-tooltip
+          placement="top"
+          effect="dark"
+          content="什么是频次间隔呢？每次触发请求的间隔时间"
         >
           <div class="flags">?</div>
         </el-tooltip>
@@ -82,9 +112,10 @@ const { showFlag, tableList } = linkageHack(props, emits)
     display: flex;
     align-items: center;
     font-size: 13px;
+    margin-bottom: 10px;
 
     > span {
-      width: 80px;
+      width: 100px;
       display: inline-block;
     }
 
@@ -113,8 +144,8 @@ const { showFlag, tableList } = linkageHack(props, emits)
 
 .step {
   color: #ffffff;
-  font-size: 22px;
-  height: 30px;
+  font-size: 16px;
+  height: 20px;
   font-style: italic;
   display: flex;
 

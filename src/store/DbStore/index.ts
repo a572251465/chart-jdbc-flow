@@ -14,6 +14,7 @@ export type IStoreFieldNeed = {
   isDbConnect: boolean
   mysqlConfigInfo: {
     tables: ITable[]
+    tableInField: Record<string, ITableFiled[]> | null
   }
 }
 export type IStoreField = Partial<IStoreFieldNeed>
@@ -23,8 +24,12 @@ export const useDbStore = defineStore('dbStore', {
     return {
       // 表示db 是否连接
       isDbConnect: false,
+      // mysql 相关的配置
       mysqlConfigInfo: {
-        tables: []
+        // 所有的表
+        tables: [],
+        // 表中的所有的字段
+        tableInField: null
       }
     } as IStoreFieldNeed
   },

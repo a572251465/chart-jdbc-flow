@@ -7,6 +7,7 @@ export type IDbLinkageAbout = {
   table: string
   tableField: ITableFiled[]
   loopCounter: number
+  loopTime: number
 }
 
 // 每个图片的类型
