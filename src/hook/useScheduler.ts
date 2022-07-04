@@ -1,14 +1,5 @@
-import { IDbLinkageAbout, INormalFn } from '@/types'
+import { INormalFn, ISchedulerRate, ITask } from '@/types'
 import { genKey } from '@/utils'
-
-type ITask = {
-  callback: INormalFn
-  endCount: number
-  computedCount: number
-  intervalTime: number
-  prevTime: number
-  taskId: string
-}
 
 // 表示任务是否已经启动
 let isSetupScheduler = false
@@ -17,7 +8,6 @@ let taskStack = [] as ITask[]
 /**
  * @author lihh
  * @description 模拟event loop
- * @param initState 是否第一次执行
  */
 const eventLoopTask = () => {
   if (!isSetupScheduler) return
@@ -96,21 +86,33 @@ export const closeScheduler = () => (isSetupScheduler = false)
  * @author lihh
  * @description db 查询相关任务调度
  * @param rate 表示调度频次
- * @param drawAssignChartCallback 绘制图表的回调
+ * @param callback 绘制图表的回调
  */
-export const schedulerTask = (
-  rate: { loopCounter: number; loopTime: number },
-  drawAssignChartCallback: INormalFn
-) => {
+const addSchedulerTask = (rate: ISchedulerRate, callback: INormalFn) => {
   const { loopCounter, loopTime } = rate
+
+  // 表示开启任务
+  setupScheduler()
 
   // 添加待执行任务
   taskStack.push({
-    callback: drawAssignChartCallback,
+    callback,
     endCount: loopCounter,
     intervalTime: loopTime,
     prevTime: 0,
     taskId: genKey(),
     computedCount: 1
   })
+}
+
+/**
+ * @author lihh
+ * @description 调度的hook
+ */
+export const useScheduler = (): [
+  (rate: ISchedulerRate, callback: INormalFn) => void,
+  INormalFn,
+  INormalFn
+] => {
+  return [addSchedulerTask, setupScheduler, closeScheduler]
 }

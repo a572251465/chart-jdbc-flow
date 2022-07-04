@@ -1,8 +1,8 @@
 import { IBlockItem, INormalFn } from '@/types'
 import { pieResolve } from '@/utils/resolve'
-import { setupScheduler } from '@/utils'
-import { schedulerTask } from '@/utils/scheduler'
+import { useScheduler } from '@/hook/useScheduler'
 
+const [addSchedulerTask] = useScheduler()
 const strategy: Record<string, INormalFn> = {
   pie: (el: HTMLDivElement, blockRef: IBlockItem) => {
     const { data, options, paramKey } = blockRef
@@ -26,8 +26,7 @@ export const dispatcher = (
   const { isMount = true } = options || {}
   const fn = strategy[blockRef.type]
 
-  setupScheduler()
   if (isMount) {
-    schedulerTask({ loopCounter: 1, loopTime: 1 }, () => fn(el, blockRef))
+    addSchedulerTask({ loopCounter: 1, loopTime: 1 }, () => fn(el, blockRef))
   }
 }

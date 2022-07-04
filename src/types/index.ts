@@ -10,6 +10,22 @@ export type IDbLinkageAbout = {
   loopTime: number
 }
 
+// 表示任务的声明类型
+export type ITask = {
+  callback: INormalFn
+  endCount: number
+  computedCount: number
+  intervalTime: number
+  prevTime: number
+  taskId: string
+}
+
+// 表示调度的频次
+export interface ISchedulerRate {
+  loopCounter: number,
+  loopTime: number
+}
+
 // 左侧初始化的block 类型参数
 interface IInitialBaseItem {
   type: string
