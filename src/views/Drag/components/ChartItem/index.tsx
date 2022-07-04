@@ -1,11 +1,9 @@
 import { defineComponent, PropType, watch } from 'vue'
-import { IBaseChartsData, IBlockItem } from '@/types'
+import { IBlockItem } from '@/types'
 import { ElSkeleton } from 'element-plus'
 import '@/views/Drag/components/index.less'
 import { chartItemHack } from '@/views/Drag/components/ChartItem/chartItem-hack'
-import { dbAboutSchedulerTask, setupScheduler } from '@/utils'
-import { strategyFieldReq } from '@/utils/req'
-import { strategyChart } from '@/utils/draw'
+import { setupScheduler } from '@/utils'
 
 export default defineComponent({
   components: {
@@ -30,36 +28,6 @@ export default defineComponent({
       drawContainerRef,
       drawContainerStyles
     } = chartItemHack(props, emit)
-
-    // 针对db相关的处理进行监听
-    watch(
-      () => props.block?.dbAbout,
-      (value) => {
-        const { loopCounter, loopTime, table, tableField } = value!
-        // 启动调度任务
-        setupScheduler()
-
-        // 添加调度任务
-        Promise.resolve().then(() => {
-          dbAboutSchedulerTask(
-            { loopCounter: loopCounter!, loopTime: loopTime! },
-            async () => {
-              // 请求策略以及绘制策略
-              const req = strategyFieldReq[curBlockItem.value.type]
-              const draw = strategyChart[curBlockItem.value.type]
-
-              const data = (await req(
-                table,
-                tableField
-              )) as any as IBaseChartsData<string, number>
-              draw(drawContainerRef, data)
-              curBlockItem.value.isScreenFrame = false
-            }
-          )
-        })
-      },
-      { deep: true }
-    )
 
     return () => (
       <div

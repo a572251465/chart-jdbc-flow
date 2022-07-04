@@ -37,23 +37,25 @@ export default defineComponent({
 
     return () => (
       <div class="drag-right">
-        <div class="drag-right-container" ref={editorRef}>
-          {allBlockItem.value.map((item) => (
-            <ChartItem
-              key={item.createDomId}
-              block={item}
-              onSingleBlockClick={singleBlockClickHandle}
-              onSingleBlockRightMenu={singleBlockRightMenuHandle}
-            />
-          ))}
+        <div class="drag-right-container">
+          <div class='drag-right-container-inner' ref={editorRef}>
+            {allBlockItem.value.map((item) => (
+              <ChartItem
+                key={item.createDomId}
+                block={item}
+                onSingleBlockClick={singleBlockClickHandle}
+                onSingleBlockRightMenu={singleBlockRightMenuHandle}
+              />
+            ))}
 
-          {/*  表示辅助线 */}
-          {markLine.x !== null && (
-            <div class="line-x" style={{ left: markLine.x + 'px' }}></div>
-          )}
-          {markLine.y !== null && (
-            <div class="line-y" style={{ top: markLine.y + 'px' }}></div>
-          )}
+            {/*  表示辅助线 */}
+            {markLine.x !== null && (
+              <div class="line-x" style={{ left: markLine.x + 'px' }}></div>
+            )}
+            {markLine.y !== null && (
+              <div class="line-y" style={{ top: markLine.y + 'px' }}></div>
+            )}
+          </div>
         </div>
 
         {/*  右击事件 触发的panel */}

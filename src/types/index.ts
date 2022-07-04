@@ -32,18 +32,18 @@ export type IBlockItem = {
   isFocus: boolean
   // 是否需要骨屏架
   isScreenFrame: boolean
-  dbAbout: Partial<IDbLinkageAbout>
+  // 表示数据
+  data: string
+  // 表示初期化参数
+  options: string
 }
 
-export interface IBaseChartsData<T, K> {
-  x: T[]
-  y: K[]
-}
-
-export type IInitialBlockItem<T = Object> = {
+// 左侧初始化的block 类型参数
+export type IInitialBlockItem = {
   type: string
   icon: any
-  chartOptions?: T
+  data: string
+  options: string
 }
 
 export interface ICommonReq<T> {

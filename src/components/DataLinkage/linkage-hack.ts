@@ -37,13 +37,6 @@ const saveDataLinkageInfo = (props: IProps, emits: IEmits) => () => {
     tableField.includes(item.fieldName)
   )
 
-  // 动态设置数据
-  const { dbAbout } = props.currentClickBlock
-  dbAbout.table = dataSourceInfo.table
-  dbAbout.tableField = tableInField
-  dbAbout.loopTime = dataSourceInfo.loopTime
-  dbAbout.loopCounter = dataSourceInfo.loopCounter
-
   emits('update:modelValue', false)
 }
 

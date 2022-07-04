@@ -8,12 +8,13 @@ export const defaultBlockItem: IBlockItem = {
   top: 0,
   left: 0,
   createDomId: genKey(),
-  type: 'broken',
+  type: '',
   zIndex: 10,
   alignCenter: true,
   isFocus: false,
   isScreenFrame: true,
-  dbAbout: {}
+  data: '',
+  options: ''
 }
 
 const blocks: IBlockItem[] = [

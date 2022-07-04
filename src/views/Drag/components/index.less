@@ -1,5 +1,5 @@
 .drag-left {
-  width: 200px;
+  width: 100px;
   height: 100%;
   background: #1b1c1f;
 
@@ -7,7 +7,7 @@
     overflow: hidden;
 
     li {
-      padding: 0 20px;
+      padding: 0 10px;
       margin-top: 20px;
 
       img {
@@ -29,7 +29,16 @@
   &-container {
     background: url('@/assets/images/canvas-bg.svg');
     height: 100%;
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &-inner {
+      position: relative;
+      background: #282a2e;
+      width: 80%;
+      height: 90%;
+    }
 
     .line-x {
       position: absolute;
