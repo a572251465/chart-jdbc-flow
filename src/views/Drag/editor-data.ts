@@ -3,8 +3,8 @@ import { genKey } from '@/utils'
 
 // 表示默认的block
 export const defaultBlockItem: IBlockItem = {
-  width: 300,
-  height: 300,
+  width: 200,
+  height: 200,
   top: 0,
   left: 0,
   createDomId: genKey(),

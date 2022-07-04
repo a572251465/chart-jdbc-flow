@@ -73,7 +73,7 @@ export default defineComponent({
         ref={currentBlockRef}
         onMousedown={(e) => singleBlockClickHandle(e)}>
         <ElSkeleton
-          rows={7}
+          rows={5}
           animated={true}
           v-show={curBlockItem.value?.isScreenFrame}
         />
