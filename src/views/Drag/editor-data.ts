@@ -3,8 +3,8 @@ import { genKey } from '@/utils'
 
 // 表示默认的block
 export const defaultBlockItem: IBlockItem = {
-  width: 200,
-  height: 200,
+  width: 400,
+  height: 400,
   top: 0,
   left: 0,
   createDomId: genKey(),
@@ -13,31 +13,11 @@ export const defaultBlockItem: IBlockItem = {
   alignCenter: true,
   isFocus: false,
   isScreenFrame: true,
-  data: '',
-  options: ''
+  data: [],
+  options: '',
+  paramKey: []
 }
 
-const blocks: IBlockItem[] = [
-  // {
-  //   width: 200,
-  //   height: 200,
-  //   top: 0,
-  //   left: 0,
-  //   createDomId: genKey(),
-  //   type: 'broken',
-  //   zIndex: 10,
-  //   alignCenter: false
-  // },
-  // {
-  //   width: 200,
-  //   height: 200,
-  //   top: 200,
-  //   left: 200,
-  //   createDomId: genKey(),
-  //   type: 'column',
-  //   zIndex: 10,
-  //   alignCenter: false
-  // }
-]
+const blocks: IBlockItem[] = []
 
 export default blocks

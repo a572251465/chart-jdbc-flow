@@ -1,6 +1,12 @@
 // 表示基本的渲染数据
-const getBaseData = () =>
+// 初期数据 都必须经过JSON.stringify 序列化
+const getBaseData = () => [
+  '"某站点用户访问来源"',
+  '["直接访问2","邮件营销","联盟广告","视频广告","搜索引擎"]',
   '[{"value":303,"name":"直接访问2"},{"value":310,"name":"邮件营销"},{"value":234,"name":"联盟广告"},{"value":135,"name":"视频广告"},{"value":158,"name":"搜索引擎"}]'
+]
+
+const getParamKeys = () => ['text', 'data', 'data1']
 
 // 表示最基本的配置
 const getBaseOptions = () => `return ({
@@ -57,5 +63,6 @@ const getBaseOptions = () => `return ({
 // 表示饼状图的信息
 export const pie = {
   getBaseData,
-  getBaseOptions
+  getBaseOptions,
+  getParamKeys
 }

@@ -8,7 +8,8 @@ const initialData: IInitialBlockItem[] = [
     type: 'pie',
     icon: pieImg,
     data: pie.getBaseData(),
-    options: pie.getBaseOptions()
+    options: pie.getBaseOptions(),
+    paramKey: pie.getParamKeys()
   }
 ]
 

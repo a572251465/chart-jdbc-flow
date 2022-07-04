@@ -37,7 +37,10 @@ export const useEditorDrag = (
       createDomId: genKey(),
       top: e.offsetY,
       left: e.offsetX,
-      type: currentMoveComponent!.type
+      type: currentMoveComponent.type,
+      data: currentMoveComponent.data,
+      options: currentMoveComponent.options,
+      paramKey: currentMoveComponent.paramKey
     } as Partial<IBlockItem>)
 
     // 给数组中添加新的block

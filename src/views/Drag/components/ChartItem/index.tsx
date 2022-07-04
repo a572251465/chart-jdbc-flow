@@ -1,14 +1,9 @@
-import { defineComponent, PropType, watch } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { IBlockItem } from '@/types'
-import { ElSkeleton } from 'element-plus'
 import '@/views/Drag/components/index.less'
 import { chartItemHack } from '@/views/Drag/components/ChartItem/chartItem-hack'
-import { setupScheduler } from '@/utils'
 
 export default defineComponent({
-  components: {
-    ElSkeleton
-  },
   props: {
     // 传递的内容
     block: {
@@ -40,16 +35,10 @@ export default defineComponent({
         style={curStyles.value}
         ref={currentBlockRef}
         onMousedown={(e) => singleBlockClickHandle(e)}>
-        <ElSkeleton
-          rows={5}
-          animated={true}
-          v-show={curBlockItem.value?.isScreenFrame}
-        />
         <div
           ref={drawContainerRef}
           id={curBlockItem.value?.createDomId}
-          style={drawContainerStyles.value}
-          v-show={!curBlockItem.value?.isScreenFrame}></div>
+          style={drawContainerStyles.value}></div>
       </div>
     )
   }

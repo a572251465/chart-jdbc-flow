@@ -95,7 +95,7 @@ export const closeScheduler = () => (isSetupScheduler = false)
 /**
  * @author lihh
  * @description db 查询相关任务调度
- * @param dbAbout 表/ 属性相关的处理
+ * @param rate 表示调度频次
  * @param drawAssignChartCallback 绘制图表的回调
  */
 export const dbAboutSchedulerTask = (

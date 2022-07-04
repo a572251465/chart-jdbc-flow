@@ -33,16 +33,18 @@ export type IBlockItem = {
   // 是否需要骨屏架
   isScreenFrame: boolean
   // 表示数据
-  data: string
+  data: string[]
   // 表示初期化参数
   options: string
+  paramKey: string[]
 }
 
 // 左侧初始化的block 类型参数
 export type IInitialBlockItem = {
   type: string
   icon: any
-  data: string
+  data: string[]
+  paramKey: string[]
   options: string
 }
 
