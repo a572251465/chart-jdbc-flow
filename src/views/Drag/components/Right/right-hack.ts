@@ -40,6 +40,10 @@ const rightMenuStyles = computed<CSSProperties>(() => ({
 }))
 // 提前一步对选中的数据进行保存
 const prevFocusData = [] as IBlockItem[]
+// 表示数据联动的showFlag
+const dataLinkageShowFlag = ref<boolean>(false)
+// 表示需要设置关联数据的组件
+const setDataLinkageComponent = ref<IBlockItem | null>(null)
 
 /**
  * @author lihh
@@ -51,7 +55,6 @@ const batchDelBlocksHandle = (
 ) => {
   // 表示删除回调
   const delCallback = () => {
-    console.log(prevFocusData)
     const ids = prevFocusData.map((item) => item.createDomId)
     allBlockItem.value = allBlockItem.value.filter(
       (item) => !ids.includes(item.createDomId)
@@ -76,6 +79,8 @@ const configureDataSourceHandle = () => {
     ElNotification.error('请先点击左侧导航，配置数据源')
     return
   }
+
+  dataLinkageShowFlag.value = true
 }
 
 // 调度方法 策略模式
@@ -155,8 +160,12 @@ export const rightHack = (props: IProps, ctx: any) => {
    * @author lihh
    * @description 单个block 右击菜单事件
    * @param e 事件源对象
+   * @param currentClickBlock 当前点击的block
    */
-  const singleBlockRightMenuHandle = (e: MouseEvent) => {
+  const singleBlockRightMenuHandle = (
+    e: MouseEvent,
+    currentClickBlock: IBlockItem
+  ) => {
     const { x, y } = e
 
     rightMenuConfigInfo.left = x
@@ -166,6 +175,9 @@ export const rightHack = (props: IProps, ctx: any) => {
     // 设置选中的数据
     prevFocusData.length = 0
     prevFocusData.push(...focusData.value.focusBlocks)
+
+    // 设置待联动的数据
+    setDataLinkageComponent.value = currentClickBlock
   }
 
   /**
@@ -192,6 +204,8 @@ export const rightHack = (props: IProps, ctx: any) => {
     editorRef,
     singleBlockClickHandle,
     singleBlockRightMenuHandle,
-    dispatcherHandle
+    dispatcherHandle,
+    dataLinkageShowFlag,
+    setDataLinkageComponent
   }
 }

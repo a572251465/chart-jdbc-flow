@@ -30,12 +30,20 @@ export type IBlockItem = {
   alignCenter: boolean
   // 表示是否被选中
   isFocus: boolean
-  dbAbout?: IDbLinkageAbout
+  // 是否需要骨屏架
+  isScreenFrame: boolean
+  dbAbout: Partial<IDbLinkageAbout>
 }
 
-export type IInitialBlockItem = {
+export interface IBaseChartsData<T, K> {
+  x: T[]
+  y: K[]
+}
+
+export type IInitialBlockItem<T = Object> = {
   type: string
   icon: any
+  chartOptions?: T
 }
 
 export interface ICommonReq<T> {

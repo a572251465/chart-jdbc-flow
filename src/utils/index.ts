@@ -1,5 +1,10 @@
 export { default as bindDom } from './dom'
 export { setCurrentEditorDrag, getCurrentEditorDrag } from './editor'
+export {
+  closeScheduler,
+  dbAboutSchedulerTask,
+  setupScheduler
+} from './scheduler'
 
 // 表示计数counter
 let blockCounter = 1

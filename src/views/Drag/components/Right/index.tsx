@@ -30,7 +30,9 @@ export default defineComponent({
       markLine,
       allBlockItem,
       editorRef,
-      dispatcherHandle
+      dispatcherHandle,
+      dataLinkageShowFlag,
+      setDataLinkageComponent
     } = rightHack(props, ctx)
 
     return () => (
@@ -72,8 +74,11 @@ export default defineComponent({
           </ul>
         </div>
 
-      {/*  数据联动弹框部分 */}
-        <DataLinkage />
+        {/*  数据联动弹框部分 */}
+        <DataLinkage
+          v-model={dataLinkageShowFlag.value}
+          currentClickBlock={setDataLinkageComponent.value}
+        />
       </div>
     )
   }

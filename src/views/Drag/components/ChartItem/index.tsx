@@ -1,7 +1,11 @@
-import { computed, defineComponent, onMounted, PropType, ref } from 'vue'
-import { IBlockItem } from '@/types'
+import { defineComponent, PropType, watch } from 'vue'
+import { IBaseChartsData, IBlockItem } from '@/types'
 import { ElSkeleton } from 'element-plus'
 import '@/views/Drag/components/index.less'
+import { chartItemHack } from '@/views/Drag/components/ChartItem/chartItem-hack'
+import { dbAboutSchedulerTask, setupScheduler } from '@/utils'
+import { strategyFieldReq } from '@/utils/req'
+import { strategyChart } from '@/utils/draw'
 
 export default defineComponent({
   components: {
@@ -16,61 +20,46 @@ export default defineComponent({
   },
   emits: ['singleBlockClick', 'singleBlockRightMenu'],
   setup(props, { emit }) {
-    // 当前图表信息
-    const curBlockItem = computed(() => props.block)
-    // 计算样式
-    const curStyles = computed(() => ({
-      width: `${curBlockItem.value?.width}px`,
-      height: `${curBlockItem.value?.height}px`,
-      top: `${curBlockItem.value?.top}px`,
-      left: `${curBlockItem.value?.left}px`,
-      zIndex: curBlockItem.value?.zIndex
-    }))
-    // 表示当前渲染的block
-    const currentBlockRef = ref<HTMLDivElement | null>(null)
+    // 执行抽离函数
+    const {
+      singleBlockClickHandle,
+      dragBlockRightMenuHandle,
+      currentBlockRef,
+      curBlockItem,
+      curStyles,
+      drawContainerRef,
+      drawContainerStyles
+    } = chartItemHack(props, emit)
 
-    /**
-     * @author lihh
-     * @description 设置元素居中处理
-     */
-    const elAlignCenterHandle = () => {
-      if (!currentBlockRef.value) return
+    // 针对db相关的处理进行监听
+    watch(
+      () => props.block?.dbAbout,
+      (value) => {
+        const { loopCounter, loopTime, table, tableField } = value!
+        // 启动调度任务
+        setupScheduler()
 
-      const { offsetWidth, offsetHeight } =
-        currentBlockRef.value as HTMLDivElement
-      curBlockItem.value!.left = curBlockItem.value?.left - offsetWidth / 2
-      curBlockItem.value!.top = curBlockItem.value?.top - offsetHeight / 2
-      curBlockItem.value!.alignCenter = false
-    }
+        // 添加调度任务
+        Promise.resolve().then(() => {
+          dbAboutSchedulerTask(
+            { loopCounter: loopCounter!, loopTime: loopTime! },
+            async () => {
+              // 请求策略以及绘制策略
+              const req = strategyFieldReq[curBlockItem.value.type]
+              const draw = strategyChart[curBlockItem.value.type]
 
-    /**
-     * @author lihh
-     * @description 点击图表事件
-     */
-    const singleBlockClickHandle = (e: MouseEvent) => {
-      // 取消默认事件
-      e.preventDefault()
-      e.stopPropagation()
-
-      emit('singleBlockClick', e, curBlockItem.value)
-    }
-
-    /**
-     * @author lihh
-     * @description 图表右击事件处理
-     * @param e 事件对象
-     */
-    const dragBlockRightMenuHandle = (e: MouseEvent) => {
-      // 禁止默认事件
-      e.preventDefault()
-      e.stopPropagation()
-      
-      emit('singleBlockRightMenu', e)
-    }
-
-    onMounted(() => {
-      if (curBlockItem.value?.alignCenter) elAlignCenterHandle()
-    })
+              const data = (await req(
+                table,
+                tableField
+              )) as any as IBaseChartsData<string, number>
+              draw(drawContainerRef, data)
+              curBlockItem.value.isScreenFrame = false
+            }
+          )
+        })
+      },
+      { deep: true }
+    )
 
     return () => (
       <div
@@ -83,7 +72,16 @@ export default defineComponent({
         style={curStyles.value}
         ref={currentBlockRef}
         onMousedown={(e) => singleBlockClickHandle(e)}>
-        <ElSkeleton rows={5} animated={true} />
+        <ElSkeleton
+          rows={7}
+          animated={true}
+          v-show={curBlockItem.value?.isScreenFrame}
+        />
+        <div
+          ref={drawContainerRef}
+          id={curBlockItem.value?.createDomId}
+          style={drawContainerStyles.value}
+          v-show={!curBlockItem.value?.isScreenFrame}></div>
       </div>
     )
   }

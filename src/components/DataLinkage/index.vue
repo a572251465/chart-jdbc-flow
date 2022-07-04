@@ -1,11 +1,16 @@
 <script lang="ts" setup>
-import { defineEmits, defineProps } from 'vue'
+import { defineEmits, defineProps, PropType } from 'vue'
 import { linkageHack } from '@/components/DataLinkage/linkage-hack'
+import { IBlockItem } from '@/types'
 
 const props = defineProps({
   modelValue: {
     type: Boolean,
     default: false
+  },
+  currentClickBlock: {
+    type: Object as PropType<IBlockItem>,
+    default: () => ({})
   }
 })
 const emits = defineEmits(['update:modelValue'])
@@ -16,7 +21,8 @@ const {
   tableList,
   dataSourceInfo,
   tableChangeHandle,
-  tableFieldInfos
+  tableFieldInfos,
+  saveDataLinkageInfo
 } = linkageHack(props, emits)
 </script>
 
@@ -67,7 +73,7 @@ const {
           type="number"
           v-model="dataSourceInfo.loopCounter"
           placeholder="请输入请求频次"
-          clearable
+          :min="1"
         />
         <el-tooltip
           placement="top"
@@ -83,6 +89,7 @@ const {
           type="number"
           v-model="dataSourceInfo.loopTime"
           placeholder="请输入频次间隔(以秒为单位)"
+          :min="1"
           clearable
         />
         <el-tooltip
@@ -95,7 +102,7 @@ const {
       </div>
     </div>
     <div class="container btns">
-      <button>保存</button>
+      <button @click="saveDataLinkageInfo">保存</button>
     </div>
   </el-drawer>
 </template>

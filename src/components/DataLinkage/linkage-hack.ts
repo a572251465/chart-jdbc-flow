@@ -1,11 +1,12 @@
 import { computed, reactive, ref } from 'vue'
 import { ITableFiled, useDbStore } from '@/store/DbStore'
-import { IDbLinkageAbout } from '@/types'
+import { IBlockItem, IDbLinkageAbout } from '@/types'
 import { tableInFieldReq } from '@/api'
 import { ElNotification } from 'element-plus'
 
 type IProps = {
   modelValue: boolean | undefined
+  currentClickBlock: IBlockItem
 }
 type INewTableField = Omit<IDbLinkageAbout, 'tableField'> & {
   tableField: string[]
@@ -24,6 +25,27 @@ const dataSourceInfo = reactive<INewTableField>({
 })
 // 表示表属性信息
 const tableFieldInfos = ref<ITableFiled[]>([])
+
+/**
+ * @author lihh
+ * @description 保存关联动态db 信息
+ */
+const saveDataLinkageInfo = (props: IProps, emits: IEmits) => () => {
+  // 筛选显示的表字段
+  const { tableField } = dataSourceInfo
+  const tableInField = tableFieldInfos.value.filter((item) =>
+    tableField.includes(item.fieldName)
+  )
+
+  // 动态设置数据
+  const { dbAbout } = props.currentClickBlock
+  dbAbout.table = dataSourceInfo.table
+  dbAbout.tableField = tableInField
+  dbAbout.loopTime = dataSourceInfo.loopTime
+  dbAbout.loopCounter = dataSourceInfo.loopCounter
+
+  emits('update:modelValue', false)
+}
 
 /**
  * @author lihh
@@ -81,6 +103,7 @@ export const linkageHack = (props: IProps, emits: IEmits) => {
     tableList,
     dataSourceInfo,
     tableChangeHandle,
-    tableFieldInfos
+    tableFieldInfos,
+    saveDataLinkageInfo: saveDataLinkageInfo(props, emits)
   }
 }
