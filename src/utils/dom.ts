@@ -18,6 +18,7 @@ const defaultValues = {
  * @param event 事件对象
  * @param eventName 事件名称
  * @param handle 事件本身
+ * @param options 传递到event参数 判断是否防抖等
  */
 const bindDom = <T = HTMLDivElement>(
   event: Window | HTMLDivElement | T,

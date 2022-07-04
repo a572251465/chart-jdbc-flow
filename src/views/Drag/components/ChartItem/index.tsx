@@ -35,6 +35,8 @@ export default defineComponent({
         style={curStyles.value}
         ref={currentBlockRef}
         onMousedown={(e) => singleBlockClickHandle(e)}>
+        {/* 设置悬浮内容 */}
+        <div class="editor-single-block-item-over"></div>
         <div
           ref={drawContainerRef}
           id={curBlockItem.value?.createDomId}
