@@ -12,7 +12,6 @@ export const defaultBlockItem: IBlockItem = {
   zIndex: 10,
   alignCenter: true,
   isFocus: false,
-  isScreenFrame: true,
   data: [],
   options: '',
   paramKey: []

@@ -1,5 +1,5 @@
 export {
-  dbAboutSchedulerTask,
+  schedulerTask,
   closeScheduler,
   setupScheduler
 } from './dbAboutSchedulerTask'

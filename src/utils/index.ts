@@ -2,7 +2,7 @@ export { default as bindDom } from './dom'
 export { setCurrentEditorDrag, getCurrentEditorDrag } from './editor'
 export {
   closeScheduler,
-  dbAboutSchedulerTask,
+  schedulerTask,
   setupScheduler
 } from './scheduler'
 

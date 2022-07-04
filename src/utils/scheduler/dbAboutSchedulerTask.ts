@@ -98,7 +98,7 @@ export const closeScheduler = () => (isSetupScheduler = false)
  * @param rate 表示调度频次
  * @param drawAssignChartCallback 绘制图表的回调
  */
-export const dbAboutSchedulerTask = (
+export const schedulerTask = (
   rate: { loopCounter: number; loopTime: number },
   drawAssignChartCallback: INormalFn
 ) => {

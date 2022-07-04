@@ -10,8 +10,20 @@ export type IDbLinkageAbout = {
   loopTime: number
 }
 
-// 每个图片的类型
-export type IBlockItem = {
+// 左侧初始化的block 类型参数
+interface IInitialBaseItem {
+  type: string
+  data: string[]
+  paramKey: string[]
+  options: string
+}
+
+export interface IInitialBlockItem extends IInitialBaseItem {
+  icon: any
+}
+
+// 每个图表的类型
+export interface IBlockItem extends IInitialBaseItem {
   // 宽
   width: number
   // 高
@@ -22,30 +34,12 @@ export type IBlockItem = {
   left: number
   // 所处的问题
   zIndex: number
-  // 图表的类型
-  type: string
   // 被创建图表的id
   createDomId: string
   // 是否要求居中
   alignCenter: boolean
   // 表示是否被选中
   isFocus: boolean
-  // 是否需要骨屏架
-  isScreenFrame: boolean
-  // 表示数据
-  data: string[]
-  // 表示初期化参数
-  options: string
-  paramKey: string[]
-}
-
-// 左侧初始化的block 类型参数
-export type IInitialBlockItem = {
-  type: string
-  icon: any
-  data: string[]
-  paramKey: string[]
-  options: string
 }
 
 export interface ICommonReq<T> {

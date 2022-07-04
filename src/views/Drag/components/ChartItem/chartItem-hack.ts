@@ -1,6 +1,6 @@
 import { IBlockItem, IDbLinkageAbout } from '@/types'
 import { computed, onMounted, ref } from 'vue'
-import { pieResolve } from '@/utils/resolve'
+import { dispatcher } from '@/views/Drag/components/ChartItem/dispatcher'
 
 type IProps = {
   block: IBlockItem
@@ -91,12 +91,8 @@ export const chartItemHack = (props: IProps, emit: IEmit) => {
   onMounted(() => {
     if (curBlockItem.value?.alignCenter) elAlignCenterHandle()
 
-    const { data, options, paramKey } = curBlockItem.value
-    // 如果是mounted 第一次渲染
-    pieResolve.drawPie(
-      drawContainerRef.value!,
-      pieResolve.resolvePieData(data, options, paramKey)
-    )
+    // 初期进行渲染
+    dispatcher(drawContainerRef.value!, curBlockItem.value)
   })
 
   return {
