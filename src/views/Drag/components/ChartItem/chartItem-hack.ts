@@ -1,5 +1,5 @@
 import { IBlockItem, IBlockMenu } from '@/types'
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { dispatcher } from '@/views/Drag/components/ChartItem/dispatcher'
 
 type IProps = {
@@ -46,6 +46,15 @@ export const chartItemHack = (props: IProps, emit: IEmit) => {
   }))
   // 表示当前渲染的block
   const currentBlockRef = ref<HTMLDivElement | null>(null)
+
+  // 编辑数据变化 重新渲染
+  watch(
+    () => curBlockItem.value.data,
+    () => {
+      dispatcher(drawContainerRef.value!, curBlockItem.value)
+    },
+    { deep: true }
+  )
 
   /**
    * @author lihh

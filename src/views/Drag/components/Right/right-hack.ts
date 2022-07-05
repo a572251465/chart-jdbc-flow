@@ -1,8 +1,15 @@
-import { computed, onBeforeMount, onMounted, ref } from 'vue'
+import {
+  computed,
+  onBeforeMount,
+  onMounted,
+  ref,
+  WritableComputedRef
+} from 'vue'
 import { IBlockItem, IBlockMenu, INormalFn } from '@/types'
 import { useFocusAboutBlock } from '@/hook/useFocusAboutBlock'
 import { useBlockDragMove } from '@/hook/useBlockDragMove'
-import { bindDom, setCurrentEditorDrag } from '@/utils'
+import { bindDom, emitter, setCurrentEditorDrag } from '@/utils'
+import { useBlockData } from '@/hook/useBlockData'
 
 type IProps = { readonly modelValue: IBlockItem[] | undefined }
 
@@ -12,20 +19,19 @@ const editorRef = ref<null | HTMLDivElement>(null)
 let unBindDom: INormalFn[] = []
 // 表示数据源弹框显示
 const dataSourceShowFlag = ref<boolean>(false)
+// 表示当前编辑的block
+const currentEditorBlock = ref<IBlockItem | null>(null)
 
 /**
  * @author lihh
- * @description 点击block元素上方菜单 触发事件
- * @param type 表示点击类型
- * @param id 表示要操作的id
+ * @description 通过编辑器修改代码内容后 调度判断
+ * @param allBlock
  */
-const singleBlockMenuDispatcher = (type: IBlockMenu, id: string) => {
-  // 如果数据源单独判断
-  if (type === IBlockMenu.DATA) {
-    dataSourceShowFlag.value = true
-    return
+const blockDataDispatcherJudge =
+  (allBlock: WritableComputedRef<IBlockItem[]>) =>
+  (params: [string, string]) => {
+    useBlockData(allBlock.value, params[1], params[0])
   }
-}
 
 /**
  * @author lihh
@@ -66,13 +72,41 @@ export const rightHack = (props: IProps, ctx: any) => {
       clearAllBlockFocusState(...args)
     })!
     unBindDom.push(unBDom)
+
+    // 订阅方法
+    emitter.on<string>(
+      'block-data-editor',
+      // @ts-ignore
+      blockDataDispatcherJudge(allBlockItem)
+    )
   })
 
   onBeforeMount(() => {
     unBindDom.forEach((fn) => {
       typeof fn === 'function' && fn()
     })
+
+    emitter.off('block-data-editor')
   })
+
+  /**
+   * @author lihh
+   * @description 点击block元素上方菜单 触发事件
+   * @param type 表示点击类型
+   * @param id 表示要操作的id
+   */
+  const singleBlockMenuDispatcher = (type: IBlockMenu, id: string) => {
+    // 过滤当前编辑的block
+    currentEditorBlock.value = allBlockItem.value.find(
+      (item) => item.createDomId === id
+    )!
+
+    // 如果数据源单独判断
+    if (type === IBlockMenu.DATA) {
+      dataSourceShowFlag.value = true
+      return
+    }
+  }
 
   /**
    * @author lihh
@@ -93,6 +127,7 @@ export const rightHack = (props: IProps, ctx: any) => {
     editorRef,
     singleBlockClickHandle,
     singleBlockMenuDispatcher,
-    dataSourceShowFlag
+    dataSourceShowFlag,
+    currentEditorBlock
   }
 }

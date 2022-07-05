@@ -26,7 +26,8 @@ export default defineComponent({
       allBlockItem,
       editorRef,
       singleBlockMenuDispatcher,
-      dataSourceShowFlag
+      dataSourceShowFlag,
+      currentEditorBlock
     } = rightHack(props, ctx)
 
     return () => (
@@ -53,7 +54,7 @@ export default defineComponent({
         </div>
 
         {/*  数据源弹框 */}
-        <DataSourceComponent v-model={dataSourceShowFlag.value} />
+        <DataSourceComponent currentEditorBlock = {currentEditorBlock.value} v-model={dataSourceShowFlag.value} />
       </div>
     )
   }

@@ -1,7 +1,10 @@
-import { computed, ref } from 'vue'
+import { computed, CSSProperties, reactive, ref } from 'vue'
+import { IBlockItem } from '@/types'
+import { emitter } from '@/utils'
 
 type IProps = {
   readonly modelValue: boolean
+  readonly currentEditorBlock: IBlockItem
 }
 
 interface IEmit {
@@ -25,9 +28,39 @@ export const dataSourceHack = (props: IProps, emits: IEmit) => {
       emits('update:modelValue', value)
     }
   })
+  // 计算jsonEditor 样式
+  const jsonEditorStyles = reactive<CSSProperties>({
+    height: `${window.screen.height * 0.75}px`
+  })
+  // 表示要转换的内容
+  const transformCodeContent = computed<string>(() => {
+    const { data, type } = props.currentEditorBlock
+    if (type === 'pie') {
+      return data[2]
+    }
+    return ''
+  })
+
+  /**
+   * @author lihh
+   * @description 编辑器修改代码后 回调
+   * @param content 回调内容
+   */
+  const saveContentCallback = (content: string) => {
+    showFlag.value = false
+
+    // 发布订阅 进行发布 告诉right.tsx 修改数据
+    emitter.emit('block-data-editor', [
+      content,
+      props.currentEditorBlock.createDomId
+    ])
+  }
 
   return {
     showFlag,
-    activeTab
+    activeTab,
+    jsonEditorStyles,
+    transformCodeContent,
+    saveContentCallback
   }
 }

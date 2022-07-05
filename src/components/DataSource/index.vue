@@ -1,17 +1,29 @@
 <script lang="ts" setup>
-import { defineProps, defineEmits } from 'vue'
+import { defineProps, defineEmits, PropType } from 'vue'
 import { dataSourceHack } from './dataSource-hack'
+import JsonEditor from '@/components/JsonEditor/index.vue'
+import { IBlockItem } from '@/types'
 
 const props = defineProps({
   modelValue: {
     type: Boolean,
     default: true
+  },
+  currentEditorBlock: {
+    type: Object as PropType<IBlockItem>,
+    default: () => ({})
   }
 })
 const emits = defineEmits(['update:modelValue'])
 
 // hack方法
-const { showFlag, activeTab } = dataSourceHack(props, emits)
+const {
+  showFlag,
+  activeTab,
+  jsonEditorStyles,
+  transformCodeContent,
+  saveContentCallback
+} = dataSourceHack(props, emits)
 </script>
 
 <template>
@@ -23,7 +35,14 @@ const { showFlag, activeTab } = dataSourceHack(props, emits)
   >
     <div class="configure-database">
       <el-tabs v-model="activeTab" type="card">
-        <el-tab-pane label="JSON" name="JSON"> </el-tab-pane>
+        <el-tab-pane label="JSON" name="JSON">
+          <div :style="jsonEditorStyles">
+            <JsonEditor
+              :content="transformCodeContent"
+              @on-save="saveContentCallback"
+            />
+          </div>
+        </el-tab-pane>
         <el-tab-pane label="DB" name="DB">Config</el-tab-pane>
       </el-tabs>
     </div>
