@@ -1,5 +1,5 @@
 import { defineComponent, PropType } from 'vue'
-import { IBlockItem } from '@/types'
+import { IBlockItem, IBlockMenu } from '@/types'
 import '@/views/Drag/components/index.less'
 import { ElTooltip } from 'element-plus'
 import { chartItemHack } from '@/views/Drag/components/ChartItem/chartItem-hack'
@@ -15,7 +15,7 @@ export default defineComponent({
       default: () => ({})
     }
   },
-  emits: ['singleBlockClick', 'singleBlockRightMenu'],
+  emits: ['singleBlockClick', 'singleBlockMenuClick'],
   setup(props, { emit }) {
     // 执行抽离函数
     const {
@@ -25,7 +25,8 @@ export default defineComponent({
       curStyles,
       drawContainerRef,
       drawContainerStyles,
-      menuList
+      menuList,
+      singleBlockMenuClickHandle
     } = chartItemHack(props, emit)
 
     return () => (
@@ -47,11 +48,20 @@ export default defineComponent({
               <i
                 class={`iconfont ${
                   curBlockItem.value.isLock ? 'icon-jiesuo' : 'icon-suoding'
-                }`}></i>
+                }`}
+                onClick={() =>
+                  singleBlockMenuClickHandle(
+                    curBlockItem.value.isLock
+                      ? IBlockMenu.UNLOCK
+                      : IBlockMenu.LOCK
+                  )
+                }></i>
             </ElTooltip>
             {menuList.map((item) => (
               <ElTooltip placement="top" content={item.tips}>
-                <i class={`iconfont ${item.icon}`}></i>
+                <i
+                  class={`iconfont ${item.icon}`}
+                  onClick={() => singleBlockMenuClickHandle(item.type)}></i>
               </ElTooltip>
             ))}
           </div>

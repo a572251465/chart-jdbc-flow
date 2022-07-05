@@ -8,8 +8,8 @@ interface IEmit {
   (event: 'update:modelValue', ...args: any[]): void
 }
 
-// 表示db类型
-const dbType = ref<string>('Mysql')
+// 表示当前激活的tab
+const activeTab = ref<string>('JSON')
 
 /**
  * @author lihh
@@ -17,7 +17,7 @@ const dbType = ref<string>('Mysql')
  * @param props 传递参数
  * @param emit 提交emit事件
  */
-export const configureHack = (props: IProps, emits: IEmit) => {
+export const dataSourceHack = (props: IProps, emits: IEmit) => {
   // 弹框显隐
   const showFlag = computed<boolean>({
     get: () => props.modelValue,
@@ -28,6 +28,6 @@ export const configureHack = (props: IProps, emits: IEmit) => {
 
   return {
     showFlag,
-    dbType
+    activeTab
   }
 }

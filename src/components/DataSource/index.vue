@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { defineProps, defineEmits } from 'vue'
-import { configureHack } from './configure-hack'
-import MysqlDb from '@/components/ConfigureDataBase/components/MysqlDb/index.vue'
+import { dataSourceHack } from './dataSource-hack'
 
 const props = defineProps({
   modelValue: {
@@ -12,7 +11,7 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue'])
 
 // hack方法
-const { showFlag, dbType } = configureHack(props, emits)
+const { showFlag, activeTab } = dataSourceHack(props, emits)
 </script>
 
 <template>
@@ -23,11 +22,9 @@ const { showFlag, dbType } = configureHack(props, emits)
     :size="400"
   >
     <div class="configure-database">
-      <el-tabs v-model="dbType" type="card">
-        <el-tab-pane label="Mysql" name="Mysql">
-          <MysqlDb :type="dbType" />
-        </el-tab-pane>
-        <el-tab-pane label="Mock" name="Mock">Config</el-tab-pane>
+      <el-tabs v-model="activeTab" type="card">
+        <el-tab-pane label="JSON" name="JSON"> </el-tab-pane>
+        <el-tab-pane label="DB" name="DB">Config</el-tab-pane>
       </el-tabs>
     </div>
   </el-drawer>

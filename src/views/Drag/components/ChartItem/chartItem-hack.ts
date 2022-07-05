@@ -7,7 +7,7 @@ type IProps = {
 }
 
 interface IEmit {
-  (event: 'singleBlockClick' | 'singleBlockRightMenu', ...args: any[]): void
+  (event: 'singleBlockClick' | 'singleBlockMenuClick', ...args: any[]): void
 }
 
 // 表示block 菜单列表
@@ -63,6 +63,15 @@ export const chartItemHack = (props: IProps, emit: IEmit) => {
 
   /**
    * @author lihh
+   * @description 表示元素菜单点击
+   * @param type 表示点击类型
+   */
+  const singleBlockMenuClickHandle = (type: IBlockMenu) => {
+    emit('singleBlockMenuClick', type, curBlockItem.value.createDomId)
+  }
+
+  /**
+   * @author lihh
    * @description 点击图表事件
    */
   const singleBlockClickHandle = (e: MouseEvent) => {
@@ -87,6 +96,7 @@ export const chartItemHack = (props: IProps, emit: IEmit) => {
     singleBlockClickHandle,
     drawContainerRef,
     drawContainerStyles,
-    menuList
+    menuList,
+    singleBlockMenuClickHandle
   }
 }

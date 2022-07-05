@@ -1,11 +1,5 @@
 <script lang="ts" setup>
-import {
-  navList,
-  skipPageHandle,
-  configureDbShowFlag,
-  navTransformShowFlag
-} from './left-nav'
-import ConfigureDataBase from '@/components/ConfigureDataBase/index.vue'
+import { navList, skipPageHandle, navTransformShowFlag } from './left-nav'
 import { onBeforeMount, onMounted, watch } from 'vue'
 import { bindDom } from '@/utils'
 import { INormalFn } from '@/types'
@@ -66,9 +60,6 @@ onBeforeMount(() => typeof onBindDom === 'function' && onBindDom())
       </ul>
     </div>
   </transition>
-
-  <!-- 配置数据源弹框 -->
-  <ConfigureDataBase v-model="configureDbShowFlag" />
 </template>
 
 <style lang="less" scoped>

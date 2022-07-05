@@ -1,5 +1,5 @@
 import { computed, onBeforeMount, onMounted, ref } from 'vue'
-import { IBlockItem, INormalFn } from '@/types'
+import { IBlockItem, IBlockMenu, INormalFn } from '@/types'
 import { useFocusAboutBlock } from '@/hook/useFocusAboutBlock'
 import { useBlockDragMove } from '@/hook/useBlockDragMove'
 import { bindDom, setCurrentEditorDrag } from '@/utils'
@@ -10,6 +10,22 @@ type IProps = { readonly modelValue: IBlockItem[] | undefined }
 const editorRef = ref<null | HTMLDivElement>(null)
 // 表示解绑事件
 let unBindDom: INormalFn[] = []
+// 表示数据源弹框显示
+const dataSourceShowFlag = ref<boolean>(false)
+
+/**
+ * @author lihh
+ * @description 点击block元素上方菜单 触发事件
+ * @param type 表示点击类型
+ * @param id 表示要操作的id
+ */
+const singleBlockMenuDispatcher = (type: IBlockMenu, id: string) => {
+  // 如果数据源单独判断
+  if (type === IBlockMenu.DATA) {
+    dataSourceShowFlag.value = true
+    return
+  }
+}
 
 /**
  * @author lihh
@@ -75,6 +91,8 @@ export const rightHack = (props: IProps, ctx: any) => {
     markLine,
     allBlockItem,
     editorRef,
-    singleBlockClickHandle
+    singleBlockClickHandle,
+    singleBlockMenuDispatcher,
+    dataSourceShowFlag
   }
 }

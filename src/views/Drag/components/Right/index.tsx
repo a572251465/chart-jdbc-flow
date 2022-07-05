@@ -4,6 +4,7 @@ import ChartItem from '@/views/Drag/components/ChartItem'
 import DataLinkage from '@/components/DataLinkage/index.vue'
 import { IBlockItem } from '@/types'
 import { rightHack } from '@/views/Drag/components/Right/right-hack'
+import DataSourceComponent from '@/components/DataSource/index.vue'
 
 export default defineComponent({
   components: {
@@ -19,8 +20,14 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup(props, ctx) {
-    const { singleBlockClickHandle, markLine, allBlockItem, editorRef } =
-      rightHack(props, ctx)
+    const {
+      singleBlockClickHandle,
+      markLine,
+      allBlockItem,
+      editorRef,
+      singleBlockMenuDispatcher,
+      dataSourceShowFlag
+    } = rightHack(props, ctx)
 
     return () => (
       <div class="drag-right">
@@ -30,6 +37,7 @@ export default defineComponent({
               <ChartItem
                 key={item.createDomId}
                 block={item}
+                onSingleBlockMenuClick={singleBlockMenuDispatcher}
                 onSingleBlockClick={singleBlockClickHandle}
               />
             ))}
@@ -43,6 +51,9 @@ export default defineComponent({
             )}
           </div>
         </div>
+
+        {/*  数据源弹框 */}
+        <DataSourceComponent v-model={dataSourceShowFlag.value} />
       </div>
     )
   }
