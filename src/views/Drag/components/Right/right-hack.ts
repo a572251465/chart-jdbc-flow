@@ -8,8 +8,9 @@ import {
 import { IBlockItem, IBlockMenu, INormalFn } from '@/types'
 import { useFocusAboutBlock } from '@/hook/useFocusAboutBlock'
 import { useBlockDragMove } from '@/hook/useBlockDragMove'
-import { bindDom, emitter, setCurrentEditorDrag } from '@/utils'
+import { bindDom, emitter, jsonEditorTips, setCurrentEditorDrag } from '@/utils'
 import { useBlockData } from '@/hook/useBlockData'
+import { useTips } from '@/hook/useTips'
 
 type IProps = { readonly modelValue: IBlockItem[] | undefined }
 
@@ -103,6 +104,8 @@ export const rightHack = (props: IProps, ctx: any) => {
 
     // 如果数据源单独判断
     if (type === IBlockMenu.DATA) {
+      const [tips] = useTips(currentEditorBlock.value.type)
+      jsonEditorTips.value = tips
       dataSourceShowFlag.value = true
       return
     }
