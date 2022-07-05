@@ -35,7 +35,7 @@
 
     &-inner {
       position: relative;
-      background: #282a2e;
+      background: #000000;
       width: 80%;
       height: 90%;
     }
@@ -54,30 +54,6 @@
       border-top: 1px dashed #ff4d4f;
     }
   }
-
-  &-contextmenu-panel {
-    width: 120px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 4000;
-
-    ul {
-      background: #282a2e;
-      color: #ffffff;
-      font-size: 12px;
-      text-align: left;
-
-      li {
-        padding: 5px 5px 5px 10px;
-        cursor: pointer;
-
-        &:hover {
-          background: #35373a;
-        }
-      }
-    }
-  }
 }
 
 .editor-single-block-item {
@@ -86,11 +62,20 @@
 
   &-over {
     position: absolute;
-    top: 0;
+    top: -40px;
     left: 0;
-    background: rgba(23, 24, 26, 0.8);
-    width: 100px;
+    background: #2b2b2b;
+    padding: 0 10px;
     height: 30px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+
+    i {
+      font-size: 22px;
+      margin: 0px 5px;
+      cursor: pointer;
+    }
   }
 
   .chart-container {

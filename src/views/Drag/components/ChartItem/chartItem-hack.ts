@@ -1,5 +1,5 @@
-import { IBlockItem, IDbLinkageAbout } from '@/types'
-import { computed, onMounted, ref } from 'vue'
+import { IBlockItem, IBlockMenu } from '@/types'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { dispatcher } from '@/views/Drag/components/ChartItem/dispatcher'
 
 type IProps = {
@@ -10,19 +10,17 @@ interface IEmit {
   (event: 'singleBlockClick' | 'singleBlockRightMenu', ...args: any[]): void
 }
 
+// 表示block 菜单列表
+const menuList = reactive([
+  { type: IBlockMenu.COPY, icon: 'icon-fuzhi', tips: '复制' },
+  { type: IBlockMenu.DEL, icon: 'icon-shanchu', tips: '删除' },
+  { type: IBlockMenu.TOPPING, icon: 'icon-zhiding', tips: '置顶' },
+  { type: IBlockMenu.BOTTOMING, icon: 'icon-zhidi', tips: '置底' },
+  { type: IBlockMenu.DATA, icon: 'icon-shujuyuan', tips: '数据源' }
+])
+
 // 表示chart 将要绘制的节点
 const drawContainerRef = ref<HTMLDivElement | null>(null)
-
-/**
- * @author lihh
- * @description 根据db 选择的属性结果 解析chart
- * @param type 表示图表的类型
- * @param dbAbout 查询的db 相关的表名/ 属性等
- */
-export const resolveChartByDbHandle = (
-  type: string,
-  dbAbout: IDbLinkageAbout
-) => {}
 
 /**
  * @author lihh
@@ -75,19 +73,6 @@ export const chartItemHack = (props: IProps, emit: IEmit) => {
     emit('singleBlockClick', e, curBlockItem.value)
   }
 
-  /**
-   * @author lihh
-   * @description 图表右击事件处理
-   * @param e 事件对象
-   */
-  const dragBlockRightMenuHandle = (e: MouseEvent) => {
-    // 禁止默认事件
-    e.preventDefault()
-    e.stopPropagation()
-
-    emit('singleBlockRightMenu', e, curBlockItem.value)
-  }
-
   onMounted(() => {
     if (curBlockItem.value?.alignCenter) elAlignCenterHandle()
 
@@ -96,12 +81,12 @@ export const chartItemHack = (props: IProps, emit: IEmit) => {
   })
 
   return {
-    dragBlockRightMenuHandle,
     curBlockItem,
     curStyles,
     currentBlockRef,
     singleBlockClickHandle,
     drawContainerRef,
-    drawContainerStyles
+    drawContainerStyles,
+    menuList
   }
 }

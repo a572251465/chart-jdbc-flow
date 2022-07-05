@@ -1,9 +1,13 @@
 import { defineComponent, PropType } from 'vue'
 import { IBlockItem } from '@/types'
 import '@/views/Drag/components/index.less'
+import { ElTooltip } from 'element-plus'
 import { chartItemHack } from '@/views/Drag/components/ChartItem/chartItem-hack'
 
 export default defineComponent({
+  components: {
+    ElTooltip
+  },
   props: {
     // 传递的内容
     block: {
@@ -16,17 +20,16 @@ export default defineComponent({
     // 执行抽离函数
     const {
       singleBlockClickHandle,
-      dragBlockRightMenuHandle,
       currentBlockRef,
       curBlockItem,
       curStyles,
       drawContainerRef,
-      drawContainerStyles
+      drawContainerStyles,
+      menuList
     } = chartItemHack(props, emit)
 
     return () => (
       <div
-        onContextmenu={(e) => dragBlockRightMenuHandle(e)}
         class={
           curBlockItem.value?.isFocus
             ? 'editor-single-block-item editor-item-focus'
@@ -35,8 +38,25 @@ export default defineComponent({
         style={curStyles.value}
         ref={currentBlockRef}
         onMousedown={(e) => singleBlockClickHandle(e)}>
-        {/* 设置悬浮内容 */}
-        <div class="editor-single-block-item-over"></div>
+        {/* 表示block 悬浮的菜单 */}
+        {curBlockItem.value.isFocus ? (
+          <div class="editor-single-block-item-over">
+            <ElTooltip
+              placement="top"
+              content={curBlockItem.value.isLock ? '解锁' : '锁定'}>
+              <i
+                class={`iconfont ${
+                  curBlockItem.value.isLock ? 'icon-jiesuo' : 'icon-suoding'
+                }`}></i>
+            </ElTooltip>
+            {menuList.map((item) => (
+              <ElTooltip placement="top" content={item.tips}>
+                <i class={`iconfont ${item.icon}`}></i>
+              </ElTooltip>
+            ))}
+          </div>
+        ) : null}
+        {/* 图表渲染el*/}
         <div
           ref={drawContainerRef}
           id={curBlockItem.value?.createDomId}

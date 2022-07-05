@@ -1,25 +1,8 @@
-import {
-  computed,
-  CSSProperties,
-  onBeforeMount,
-  onMounted,
-  reactive,
-  ref,
-  WritableComputedRef
-} from 'vue'
+import { computed, onBeforeMount, onMounted, ref } from 'vue'
 import { IBlockItem, INormalFn } from '@/types'
 import { useFocusAboutBlock } from '@/hook/useFocusAboutBlock'
 import { useBlockDragMove } from '@/hook/useBlockDragMove'
 import { bindDom, setCurrentEditorDrag } from '@/utils'
-import { VuMessageBox } from 'vu-design-plus'
-import { ElNotification } from 'element-plus'
-import { useDbStore } from '@/store/DbStore'
-
-export const enum IContextMenuEnum {
-  DEL = 'del',
-  Copy = 'copy',
-  DB = 'db'
-}
 
 type IProps = { readonly modelValue: IBlockItem[] | undefined }
 
@@ -27,68 +10,6 @@ type IProps = { readonly modelValue: IBlockItem[] | undefined }
 const editorRef = ref<null | HTMLDivElement>(null)
 // 表示解绑事件
 let unBindDom: INormalFn[] = []
-// 右点菜单配置信息
-const rightMenuConfigInfo = reactive({
-  showFlag: false,
-  left: 0,
-  top: 0
-})
-// 表示右击菜单样式
-const rightMenuStyles = computed<CSSProperties>(() => ({
-  top: `${rightMenuConfigInfo.top}px`,
-  left: `${rightMenuConfigInfo.left}px`
-}))
-// 提前一步对选中的数据进行保存
-const prevFocusData = [] as IBlockItem[]
-// 表示数据联动的showFlag
-const dataLinkageShowFlag = ref<boolean>(false)
-// 表示需要设置关联数据的组件
-const setDataLinkageComponent = ref<IBlockItem | null>(null)
-
-/**
- * @author lihh
- * @description 批量删除 block元素
- * @param allBlockItem 原来的数据
- */
-const batchDelBlocksHandle = (
-  allBlockItem: WritableComputedRef<IBlockItem[]>
-) => {
-  // 表示删除回调
-  const delCallback = () => {
-    const ids = prevFocusData.map((item) => item.createDomId)
-    allBlockItem.value = allBlockItem.value.filter(
-      (item) => !ids.includes(item.createDomId)
-    )
-    prevFocusData.length = 0
-    ElNotification.success('删除成功')
-  }
-
-  VuMessageBox.delete('确定要删除选中的资源吗', {
-    callback: delCallback
-  })
-}
-
-/**
- * @author lihh
- * @description 表示配置数据源
- */
-const configureDataSourceHandle = () => {
-  // 判断是否连接数据库
-  const store = useDbStore()
-  if (!store.isDbConnect) {
-    ElNotification.error('请先点击左侧导航，配置数据源')
-    return
-  }
-
-  dataLinkageShowFlag.value = true
-}
-
-// 调度方法 策略模式
-const dispatcherStrategy: Record<IContextMenuEnum, INormalFn> = {
-  [IContextMenuEnum.DEL]: batchDelBlocksHandle,
-  [IContextMenuEnum.Copy]: () => {},
-  [IContextMenuEnum.DB]: configureDataSourceHandle
-}
 
 /**
  * @author lihh
@@ -128,13 +49,7 @@ export const rightHack = (props: IProps, ctx: any) => {
       mouseDownClearComputedState()
       clearAllBlockFocusState(...args)
     })!
-
-    // bind window click event, when clicking body, cancel bind state
-    const unBDom1 = bindDom(window, 'click', () => {
-      // 右击菜单取消
-      rightMenuConfigInfo.showFlag = false
-    })!
-    unBindDom.push(unBDom, unBDom1)
+    unBindDom.push(unBDom)
   })
 
   onBeforeMount(() => {
@@ -156,56 +71,10 @@ export const rightHack = (props: IProps, ctx: any) => {
     markLine.y = null
   }
 
-  /**
-   * @author lihh
-   * @description 单个block 右击菜单事件
-   * @param e 事件源对象
-   * @param currentClickBlock 当前点击的block
-   */
-  const singleBlockRightMenuHandle = (
-    e: MouseEvent,
-    currentClickBlock: IBlockItem
-  ) => {
-    const { x, y } = e
-
-    rightMenuConfigInfo.left = x
-    rightMenuConfigInfo.top = y
-    rightMenuConfigInfo.showFlag = true
-
-    // 设置选中的数据
-    prevFocusData.length = 0
-    prevFocusData.push(...focusData.value.focusBlocks)
-
-    // 设置待联动的数据
-    setDataLinkageComponent.value = currentClickBlock
-  }
-
-  /**
-   * @author lihh
-   * @description 调度方法
-   * @param e 事件对象
-   * @param type 点击类型
-   */
-  const dispatcherHandle = (e: MouseEvent, type: IContextMenuEnum) => {
-    // 阻止默认事件
-    e.stopPropagation()
-    e.preventDefault()
-
-    if (!Reflect.has(dispatcherStrategy, type)) return
-
-    dispatcherStrategy[type](allBlockItem)
-  }
-
   return {
-    rightMenuStyles,
-    rightMenuConfigInfo,
     markLine,
     allBlockItem,
     editorRef,
-    singleBlockClickHandle,
-    singleBlockRightMenuHandle,
-    dispatcherHandle,
-    dataLinkageShowFlag,
-    setDataLinkageComponent
+    singleBlockClickHandle
   }
 }

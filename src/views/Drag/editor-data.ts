@@ -12,6 +12,7 @@ export const defaultBlockItem: IBlockItem = {
   zIndex: 10,
   alignCenter: true,
   isFocus: false,
+  isLock: false,
   data: [],
   options: '',
   paramKey: []

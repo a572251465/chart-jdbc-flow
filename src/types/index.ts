@@ -2,6 +2,17 @@ import { ITableFiled } from '@/store/DbStore'
 
 export type INormalFn = (...args: any[]) => void
 
+// 表示block menu类型
+export enum IBlockMenu {
+  UNLOCK = 'UNLOCK',
+  LOCK = 'LOCK',
+  COPY = 'COPY',
+  DEL = 'DEL',
+  TOPPING = 'TOPPING',
+  BOTTOMING = 'BOTTOMING',
+  DATA = 'DATA'
+}
+
 // 表示图表 联动关联配置
 export type IDbLinkageAbout = {
   table: string
@@ -22,7 +33,7 @@ export type ITask = {
 
 // 表示调度的频次
 export interface ISchedulerRate {
-  loopCounter: number,
+  loopCounter: number
   loopTime: number
 }
 
@@ -56,6 +67,8 @@ export interface IBlockItem extends IInitialBaseItem {
   alignCenter: boolean
   // 表示是否被选中
   isFocus: boolean
+  // 表示是否被锁定
+  isLock: boolean
 }
 
 export interface ICommonReq<T> {
