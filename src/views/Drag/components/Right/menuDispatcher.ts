@@ -2,6 +2,7 @@ import type { Ref, WritableComputedRef } from 'vue'
 import { IBlockItem, IBlockMenu, INormalFn } from '@/types'
 import { VuMessageBox } from 'vu-design-plus'
 import { ElNotification } from 'element-plus'
+import { setCopyBlock } from '@/utils/editor'
 
 /**
  * @author lihh
@@ -30,14 +31,23 @@ const delCurrentBlock = (
  * @description 元素的锁定 以及解锁
  * @param currentEditorBlock 当前编辑的block
  */
-const currentBlockLockOrUnlock = (currentEditorBlock: Ref<IBlockItem>) => {}
+const currentBlockLockOrUnlock = (currentEditorBlock: Ref<IBlockItem>) => {
+  const targetLockState = currentEditorBlock.value.isLock
+  currentEditorBlock.value.isLock = !targetLockState
+
+  ElNotification.success(`${targetLockState ? '解锁成功' : '锁定成功'}`)
+}
 
 /**
  * @author lihh
  * @description 当前block 复制
  * @param currentEditorBlock 当前编辑的block
  */
-const currentBlockCopy = (currentEditorBlock: Ref<IBlockItem>) => {}
+const currentBlockCopy = (currentEditorBlock: Ref<IBlockItem>) => {
+  setCopyBlock(currentEditorBlock.value)
+
+  ElNotification.success('复制成功')
+}
 
 /**
  * @author lihh
