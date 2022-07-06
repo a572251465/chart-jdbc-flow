@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { defineProps, onMounted, watch } from 'vue'
-import { jsonEditorTips } from '@/utils'
+import Tips from '@/components/Tips/index.vue'
 // 参数
 const props = defineProps({
   content: {
@@ -68,14 +68,7 @@ onMounted(() => {
 <template>
   <div class="json-editor">
     <div id="editor"></div>
-    <div class="tips" v-show="jsonEditorTips.length > 0">
-      <h4>WARNING</h4>
-      <ul>
-        <li class="content" v-for="(item, key) in jsonEditorTips" :key="key">
-          {{ item }}
-        </li>
-      </ul>
-    </div>
+    <Tips />
     <button class="save" @click="saveContent">保存</button>
   </div>
 </template>
@@ -89,26 +82,6 @@ onMounted(() => {
 
 #editor {
   height: 60%;
-}
-
-.tips {
-  padding: 3px 16px;
-  background-color: rgba(245, 108, 108, 0.3);
-  border-radius: 4px;
-  border-left: 5px solid #f56c6c;
-  margin: 20px 0;
-
-  h4 {
-    padding: 10px 0;
-    margin: 0;
-  }
-
-  .content {
-    font-size: 12px;
-    margin: 3px 3px 3px 13px;
-    list-style: square;
-    list-style: unset;
-  }
 }
 
 button {
