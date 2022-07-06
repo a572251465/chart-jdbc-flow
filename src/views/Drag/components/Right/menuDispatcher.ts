@@ -58,7 +58,16 @@ const currentBlockCopy = (currentEditorBlock: Ref<IBlockItem>) => {
 const currentBlockTopping = (
   currentEditorBlock: Ref<IBlockItem>,
   allBlockItem: WritableComputedRef<IBlockItem[]>
-) => {}
+) => {
+  // 1. 找到最大的zIndex
+  const zIndexArr = allBlockItem.value.map((item) => item.zIndex)
+  const max = Math.max(...zIndexArr)
+
+  // 2. 设置当前编辑的block 最大值+1
+  currentEditorBlock.value.zIndex = max + 1
+
+  ElNotification.success('置顶成功')
+}
 
 /**
  * @author lihh
@@ -69,7 +78,22 @@ const currentBlockTopping = (
 const currentBlockBottoming = (
   currentEditorBlock: Ref<IBlockItem>,
   allBlockItem: WritableComputedRef<IBlockItem[]>
-) => {}
+) => {
+  const { createDomId } = currentEditorBlock.value
+  const zIndexArr = allBlockItem.value.map((item) => item.zIndex)
+  const min = Math.min(...zIndexArr)
+
+  if (min === 0) {
+    currentEditorBlock.value.zIndex = min
+    allBlockItem.value
+      .filter((item) => item.createDomId !== createDomId)
+      .forEach((item) => (item.zIndex = item.zIndex + 1))
+  } else {
+    currentEditorBlock.value.zIndex = min - 1
+  }
+
+  ElNotification.success('置底成功')
+}
 
 const blockMenuStrategy: Record<IBlockMenu, INormalFn> = {
   [IBlockMenu.DEL]: delCurrentBlock,
