@@ -11,6 +11,7 @@ import { useBlockDragMove } from '@/hook/useBlockDragMove'
 import { bindDom, emitter, jsonEditorTips, setCurrentEditorDrag } from '@/utils'
 import { useBlockData } from '@/hook/useBlockData'
 import { useTips } from '@/hook/useTips'
+import { blockMenuStrategy } from '@/views/Drag/components/Right/menuDispatcher'
 
 type IProps = { readonly modelValue: IBlockItem[] | undefined }
 
@@ -108,6 +109,9 @@ export const rightHack = (props: IProps, ctx: any) => {
       jsonEditorTips.value = tips
       dataSourceShowFlag.value = true
       return
+    } else {
+      // 执行策略方法 锁定/ 解锁/ 复制/ 删除/ 置顶/ 置底
+      blockMenuStrategy[type](currentEditorBlock, allBlockItem)
     }
   }
 
