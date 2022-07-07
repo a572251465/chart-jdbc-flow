@@ -5,3 +5,23 @@
 .el-drawer {
   --el-drawer-padding-primary: 20px 10px;
 }
+
+.el-drawer__body {
+  overflow: hidden !important;
+}
+
+.ace-monokai {
+  background: black !important;
+}
+
+.ace-monokai .ace_gutter {
+  background: black !important;
+}
+
+.ace-monokai .ace_gutter-active-line {
+  background: black !important;
+}
+
+.ace-monokai .ace_marker-layer .ace_active-line {
+  background: #1b1c1f !important;
+}

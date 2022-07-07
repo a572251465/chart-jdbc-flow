@@ -3,6 +3,7 @@ import { defineProps, defineEmits, PropType } from 'vue'
 import { dataSourceHack } from './dataSource-hack'
 import JsonEditor from '@/components/JsonEditor/index.vue'
 import { IBlockItem } from '@/types'
+import ChartDataConfig from '@/components/ChartDataConfig/index.vue'
 
 const props = defineProps({
   modelValue: {
@@ -43,7 +44,9 @@ const {
             />
           </div>
         </el-tab-pane>
-        <el-tab-pane label="DB" name="DB">Config</el-tab-pane>
+        <el-tab-pane label="DB" name="DB">
+          <ChartDataConfig />
+        </el-tab-pane>
       </el-tabs>
     </div>
   </el-drawer>

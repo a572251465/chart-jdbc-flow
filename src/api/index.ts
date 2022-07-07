@@ -37,3 +37,11 @@ export const getDataByTableReq = (dbNeedInfo: {
   table: string
   fields: string[]
 }) => api.Post<ICommonReq<any>>('public/getDataByTable', dbNeedInfo)
+
+/**
+ * @author lihh
+ * @description 执行sql请求
+ * @param sql 执行的sql
+ */
+export const execSqlReq = (sql: string) =>
+  api.Post<ICommonReq<any>>('public/sql', { sql })
