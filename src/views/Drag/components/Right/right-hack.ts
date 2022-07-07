@@ -3,15 +3,14 @@ import {
   onBeforeMount,
   onMounted,
   ref,
-  WritableComputedRef
 } from 'vue'
 import { IBlockItem, IBlockMenu, INormalFn } from '@/types'
 import { useFocusAboutBlock } from '@/hook/useFocusAboutBlock'
 import { useBlockDragMove } from '@/hook/useBlockDragMove'
-import { bindDom, emitter, jsonEditorTips, setCurrentEditorDrag } from '@/utils'
-import { useBlockData } from '@/hook/useBlockData'
+import { emitter, jsonEditorTips, setCurrentEditorDrag } from '@/utils'
 import { useTips } from '@/hook/useTips'
 import { blockMenuStrategy } from '@/views/Drag/components/Right/menuDispatcher'
+import { mountedEvent } from '@/views/Drag/components/Right/mountedEvent'
 
 type IProps = { readonly modelValue: IBlockItem[] | undefined }
 
@@ -23,17 +22,6 @@ let unBindDom: INormalFn[] = []
 const dataSourceShowFlag = ref<boolean>(false)
 // 表示当前编辑的block
 const currentEditorBlock = ref<IBlockItem | null>(null)
-
-/**
- * @author lihh
- * @description 通过编辑器修改代码内容后 调度判断
- * @param allBlock
- */
-const blockDataDispatcherJudge =
-  (allBlock: WritableComputedRef<IBlockItem[]>) =>
-  (params: [string, string]) => {
-    useBlockData(allBlock.value, params[1], params[0])
-  }
 
 /**
  * @author lihh
@@ -68,18 +56,12 @@ export const rightHack = (props: IProps, ctx: any) => {
     // set drag canvas
     setCurrentEditorDrag(editorRef.value!)
 
-    // bind window mousedown event，when clicking body, cancel all block focus state
-    const unBDom = bindDom(window, 'mousedown', (...args) => {
-      mouseDownClearComputedState()
-      clearAllBlockFocusState(...args)
-    })!
-    unBindDom.push(unBDom)
-
-    // 订阅方法
-    emitter.on<string>(
-      'block-data-editor',
-      // @ts-ignore
-      blockDataDispatcherJudge(allBlockItem)
+    mountedEvent(
+      unBindDom,
+      allBlockItem,
+      mouseDownClearComputedState,
+      clearAllBlockFocusState,
+      lastSelectedBlock
     )
   })
 

@@ -1,5 +1,6 @@
 import { computed, WritableComputedRef, ref } from 'vue'
 import { IBlockItem, INormalFn } from '@/types'
+import { setCopyBlock } from '@/utils/editor'
 
 // 最后一个被选中的block
 const lastSelectedBlockId = ref<string>('')
@@ -80,7 +81,6 @@ export const useFocusAboutBlock = (
 
     // 设置最后一个选中的id
     lastSelectedBlockId.value = blockRef.isFocus ? blockRef.createDomId : ''
-
     callback && callback(e)
   }
 

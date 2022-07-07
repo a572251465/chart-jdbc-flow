@@ -3,8 +3,14 @@ import { IBlockItem } from '@/types'
 
 let editorDragDom: null | HTMLDivElement = null
 // 表示复制待完成的组件
-let copyToBeCompletedBlockInfo: Record<string, any> = {
-  block: null
+let copyToBeCompletedBlockInfo: {
+  block: IBlockItem | null
+  x: number
+  y: number
+} = {
+  block: null,
+  x: 0,
+  y: 0
 }
 
 /**
@@ -29,6 +35,16 @@ export const getCurrentEditorDrag = () => editorDragDom
  */
 export const setCopyBlock = (block: IBlockItem) => {
   copyToBeCompletedBlockInfo.block = block
+}
+/**
+ * @author lihh
+ * @description 设置待copy block 位置
+ * @param x x轴位置
+ * @param y y轴位置
+ */
+export const setCopyBlockPos = (x: number, y: number) => {
+  copyToBeCompletedBlockInfo.x = x
+  copyToBeCompletedBlockInfo.y = y
 }
 
 /**
