@@ -1,36 +1,15 @@
 import { defineStore } from 'pinia'
-
-export type ITableFiled = {
-  fieldName: string
-  fieldComment: string
-}
-
-export type ITable = {
-  tableName: string
-  tableComment: string
-}
+import { IDataSourceTarget } from '@/types'
 
 export type IStoreFieldNeed = {
-  isDbConnect: boolean
-  mysqlConfigInfo: {
-    tables: ITable[]
-    tableInField: Record<string, ITableFiled[]> | null
-  }
+  dataSources: Record<IDataSourceTarget, { name: string }>
 }
 export type IStoreField = Partial<IStoreFieldNeed>
 
 export const useDbStore = defineStore('dbStore', {
   state: () => {
     return {
-      // 表示db 是否连接
-      isDbConnect: false,
-      // mysql 相关的配置
-      mysqlConfigInfo: {
-        // 所有的表
-        tables: [],
-        // 表中的所有的字段
-        tableInField: null
-      }
+      dataSources: {}
     } as IStoreFieldNeed
   },
 
@@ -53,7 +32,7 @@ export const useDbStore = defineStore('dbStore', {
     strategies: [
       {
         storage: localStorage,
-        paths: ['isDbConnect', 'mysqlConfigInfo']
+        paths: ['dataSources']
       }
     ]
   }

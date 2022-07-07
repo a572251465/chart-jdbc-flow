@@ -1,6 +1,5 @@
 import api from './base/request'
 import { ICommonReq } from '@/types'
-import { ITable } from '@/store/DbStore'
 
 export type ILoginDbInfo = {
   host: string
@@ -16,7 +15,7 @@ export type ILoginDbInfo = {
  * @param dbConfigInfo 表示DB 的配置信息
  */
 export const dbConnectReq = (dbConfigInfo: ILoginDbInfo) =>
-  api.Post<ICommonReq<ITable[]>>('public/connect', dbConfigInfo)
+  api.Post<ICommonReq<any>>('public/connect', dbConfigInfo)
 
 /**
  * @author lihh

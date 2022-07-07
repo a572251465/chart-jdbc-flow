@@ -1,5 +1,3 @@
-import { ITableFiled } from '@/store/DbStore'
-
 export type INormalFn = (...args: any[]) => void
 
 // 表示block menu类型
@@ -11,14 +9,6 @@ export enum IBlockMenu {
   TOPPING = 'TOPPING',
   BOTTOMING = 'BOTTOMING',
   DATA = 'DATA'
-}
-
-// 表示图表 联动关联配置
-export type IDbLinkageAbout = {
-  table: string
-  tableField: ITableFiled[]
-  loopCounter: number
-  loopTime: number
 }
 
 // 表示任务的声明类型
@@ -43,6 +33,11 @@ interface IInitialBaseItem {
   data: string[]
   paramKey: string[]
   options: string
+}
+
+// 表示数据源类型
+export const enum IDataSourceTarget {
+  MYSQL = 'MYSQL'
 }
 
 export interface IInitialBlockItem extends IInitialBaseItem {

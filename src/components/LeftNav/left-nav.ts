@@ -19,14 +19,14 @@ const navList = [
     tips: '预设置'
   }
 ]
-// 表示配置db showFlag
-const configureDbShowFlag = ref<boolean>(false)
 // 策略模式
 const strategy: Record<string, INormalFn> = {
   database: () => configureDbHandle()
 }
 // 表示导航变化showFlag
 const navTransformShowFlag = ref<boolean>(true)
+// 表示连接db的弹框显隐
+const connectDbShowFlag = ref<boolean>(false)
 
 /**
  * @author lihh
@@ -41,6 +41,6 @@ const skipPageHandle = (type: string, ...args: any[]) => {
 }
 
 // 配置db 信息弹框弹框
-const configureDbHandle = () => (configureDbShowFlag.value = true)
+const configureDbHandle = () => (connectDbShowFlag.value = true)
 
-export { navList, skipPageHandle, configureDbShowFlag, navTransformShowFlag }
+export { navList, skipPageHandle, navTransformShowFlag, connectDbShowFlag }

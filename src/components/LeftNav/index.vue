@@ -1,9 +1,15 @@
 <script lang="ts" setup>
-import { navList, skipPageHandle, navTransformShowFlag } from './left-nav'
+import {
+  navList,
+  skipPageHandle,
+  navTransformShowFlag,
+  connectDbShowFlag
+} from './left-nav'
 import { onBeforeMount, onMounted, watch } from 'vue'
 import { bindDom } from '@/utils'
 import { INormalFn } from '@/types'
 import { useGlobalStore } from '@/store/GlobalStore'
+import ConnectDb from '@/components/ConnectDb/index.vue'
 // 卸载绑定事件
 let onBindDom: null | INormalFn = null
 // 表示store 仓库
@@ -60,6 +66,9 @@ onBeforeMount(() => typeof onBindDom === 'function' && onBindDom())
       </ul>
     </div>
   </transition>
+
+  <!--  设置以及连接db  -->
+  <ConnectDb v-model="connectDbShowFlag" />
 </template>
 
 <style lang="less" scoped>

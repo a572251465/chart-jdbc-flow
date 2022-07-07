@@ -1,15 +1,13 @@
 import { defineComponent, PropType } from 'vue'
 import '@/views/Drag/components/index.less'
 import ChartItem from '@/views/Drag/components/ChartItem'
-import DataLinkage from '@/components/DataLinkage/index.vue'
 import { IBlockItem } from '@/types'
 import { rightHack } from '@/views/Drag/components/Right/right-hack'
 import DataSourceComponent from '@/components/DataSource/index.vue'
 
 export default defineComponent({
   components: {
-    ChartItem,
-    DataLinkage
+    ChartItem
   },
   props: {
     // 传递的参数

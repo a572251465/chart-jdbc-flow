@@ -13,7 +13,9 @@ import {
   ElSelect,
   ElOption,
   ElCheckbox,
-  ElCheckboxGroup, ElScrollbar
+  ElCheckboxGroup,
+  ElScrollbar,
+  ElDialog
 } from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
@@ -37,7 +39,8 @@ const components = [
   ElOption,
   ElCheckbox,
   ElCheckboxGroup,
-  ElScrollbar
+  ElScrollbar,
+  ElDialog
 ] as IComponentType[]
 
 export default (app: App) => {
