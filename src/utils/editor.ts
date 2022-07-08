@@ -1,5 +1,6 @@
 // 表示当前画布dom
-import { IBlockItem } from '@/types'
+import { IBlockItem, IComponentBlockType } from '@/types'
+import { ref } from 'vue'
 
 let editorDragDom: null | HTMLDivElement = null
 // 表示复制待完成的组件
@@ -12,6 +13,8 @@ let copyToBeCompletedBlockInfo: {
   x: 0,
   y: 0
 }
+// 表示编辑的当前组件的类型
+let currentEditorComponentType = ref<IComponentBlockType>(IComponentBlockType.PIE)
 
 /**
  * @author lihh
@@ -52,3 +55,17 @@ export const setCopyBlockPos = (x: number, y: number) => {
  * @description 获取复制 block
  */
 export const getCopyBlock = () => copyToBeCompletedBlockInfo
+
+/**
+ * @author lihh
+ * @description 设置当前组件的类型
+ * @param type 类型
+ */
+export const setCurrentComponentType = (type: IComponentBlockType) =>
+  (currentEditorComponentType.value = type)
+
+/**
+ * @author lihh
+ * @description 获取当前组件类型
+ */
+export const getCurrentComponentType = () => currentEditorComponentType

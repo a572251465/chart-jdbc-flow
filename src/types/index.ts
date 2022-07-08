@@ -11,6 +11,16 @@ export enum IBlockMenu {
   DATA = 'DATA'
 }
 
+// 表示组件的分类
+export const enum IComponentBlockType {
+  PIE = 'pie'
+}
+
+// 表示发布订阅的分类
+export const enum IEmitterTypes {
+  SQL_QUERY_RESULT = 'SQL_QUERY_RESULT'
+}
+
 // 表示任务的声明类型
 export type ITask = {
   callback: INormalFn
@@ -29,7 +39,7 @@ export interface ISchedulerRate {
 
 // 左侧初始化的block 类型参数
 interface IInitialBaseItem {
-  type: string
+  type: IComponentBlockType
   data: string[]
   paramKey: string[]
   options: string

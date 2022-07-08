@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 // 表示编辑器
 import { onMounted, reactive, ref } from 'vue'
-import { IDataSourceTarget } from '@/types'
+import { IDataSourceTarget, IEmitterTypes } from '@/types'
 import { useDbStore } from '@/store/DbStore'
 import { ElNotification } from 'element-plus'
 import { execSqlReq } from '@/api'
+import { emitter } from '@/utils'
 
 let editor: {
   setTheme: (arg0: string) => void
@@ -43,11 +44,13 @@ const execSqlHandle = async () => {
   const res = await execSqlReq(sql)
   sqlExecFlags.value = false
   if (res.code !== 200) {
-    ElNotification.error("sql执行失败")
+    ElNotification.error('sql执行失败')
     console.error(res)
     return
   }
 
+  // 告诉其他组件已经查询出来了
+  emitter.emit(IEmitterTypes.SQL_QUERY_RESULT, JSON.stringify(res.data))
   // 设置显示内容
   resultEditor!.setValue(JSON.stringify(res.data, null, 2))
 }
@@ -146,6 +149,7 @@ onMounted(() => {
   height: 100px;
   margin-top: 20px;
 }
+
 #editor_queryResult {
   height: 300px;
   margin-top: 20px;

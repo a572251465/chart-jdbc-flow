@@ -1,4 +1,4 @@
-import { IBlockItem } from '@/types'
+import { IBlockItem, IComponentBlockType } from '@/types'
 import { genKey } from '@/utils'
 
 // 表示默认的block
@@ -8,7 +8,7 @@ export const defaultBlockItem: IBlockItem = {
   top: 0,
   left: 0,
   createDomId: genKey(),
-  type: '',
+  type: IComponentBlockType.PIE,
   zIndex: 10,
   alignCenter: true,
   isFocus: false,
