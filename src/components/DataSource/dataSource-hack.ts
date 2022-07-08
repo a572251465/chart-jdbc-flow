@@ -1,5 +1,5 @@
 import { computed, CSSProperties, reactive, ref } from 'vue'
-import { IBlockItem } from '@/types'
+import { IBlockItem, IEmitterTypes } from '@/types'
 import { emitter } from '@/utils'
 
 type IProps = {
@@ -50,7 +50,7 @@ export const dataSourceHack = (props: IProps, emits: IEmit) => {
     showFlag.value = false
 
     // 发布订阅 进行发布 告诉right.tsx 修改数据
-    emitter.emit('block-data-editor', [
+    emitter.emit(IEmitterTypes.BLOCK_DATA_EDITOR, [
       content,
       props.currentEditorBlock.createDomId
     ])

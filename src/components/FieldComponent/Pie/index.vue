@@ -3,6 +3,7 @@ import { reactive } from 'vue'
 import { ElNotification } from 'element-plus'
 import { emitter } from '@/utils'
 import { IEmitterTypes } from '@/types'
+import { currentSelectedBlock, getSelectedBlock } from '@/utils/editor'
 
 interface IOptions {
   label: string
@@ -30,7 +31,6 @@ const sqlQueryResult = reactive<Record<string, any>[]>([])
 // 使用发布订阅 监听查询结果
 // @ts-ignore
 emitter.on<IEmitterTypes>(IEmitterTypes.SQL_QUERY_RESULT, (value: string) => {
-  console.log(value)
   const arr = JSON.parse(value) as Record<string, any>[]
   if (arr.length === 0) return
 
@@ -58,6 +58,12 @@ const mappingChartDataHandle = () => {
       name: item[x]
     })
   })
+
+  const currentSelectedBlock = getSelectedBlock()
+  emitter.emit(IEmitterTypes.BLOCK_DATA_EDITOR, [
+    JSON.stringify(result),
+    currentSelectedBlock.createDomId
+  ])
 }
 
 /**

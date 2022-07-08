@@ -14,7 +14,11 @@ let copyToBeCompletedBlockInfo: {
   y: 0
 }
 // 表示编辑的当前组件的类型
-let currentEditorComponentType = ref<IComponentBlockType>(IComponentBlockType.PIE)
+let currentEditorComponentType = ref<IComponentBlockType>(
+  IComponentBlockType.PIE
+)
+// 表示当前选择的组件
+let currentSelectedBlock: IBlockItem | null = null
 
 /**
  * @author lihh
@@ -69,3 +73,12 @@ export const setCurrentComponentType = (type: IComponentBlockType) =>
  * @description 获取当前组件类型
  */
 export const getCurrentComponentType = () => currentEditorComponentType
+
+/**
+ * @author lihh
+ * @description 设置选择或是获取的block
+ */
+export const setSelectedBlock = (block: IBlockItem) => {
+  currentSelectedBlock = block
+}
+export const getSelectedBlock = () => currentSelectedBlock!

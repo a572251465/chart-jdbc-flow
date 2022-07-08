@@ -1,12 +1,12 @@
 import { computed, onBeforeMount, onMounted, ref } from 'vue'
-import { IBlockItem, IBlockMenu, INormalFn } from '@/types'
+import { IBlockItem, IBlockMenu, IEmitterTypes, INormalFn } from '@/types'
 import { useFocusAboutBlock } from '@/hook/useFocusAboutBlock'
 import { useBlockDragMove } from '@/hook/useBlockDragMove'
 import { emitter, jsonEditorTips, setCurrentEditorDrag } from '@/utils'
 import { useTips } from '@/hook/useTips'
 import { blockMenuStrategy } from '@/views/Drag/components/Right/menuDispatcher'
 import { mountedEvent } from '@/views/Drag/components/Right/mountedEvent'
-import { setCurrentComponentType } from '@/utils/editor'
+import { setCurrentComponentType, setSelectedBlock } from '@/utils/editor'
 
 type IProps = { readonly modelValue: IBlockItem[] | undefined }
 
@@ -66,7 +66,7 @@ export const rightHack = (props: IProps, ctx: any) => {
       typeof fn === 'function' && fn()
     })
 
-    emitter.off('block-data-editor')
+    emitter.off(IEmitterTypes.BLOCK_DATA_EDITOR)
   })
 
   /**
@@ -83,6 +83,7 @@ export const rightHack = (props: IProps, ctx: any) => {
 
     // 设置当前编辑的组件类型
     setCurrentComponentType(currentEditorBlock.value.type)
+    setSelectedBlock(currentEditorBlock.value)
 
     // 如果数据源单独判断
     if (type === IBlockMenu.DATA) {

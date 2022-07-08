@@ -18,7 +18,8 @@ export const enum IComponentBlockType {
 
 // 表示发布订阅的分类
 export const enum IEmitterTypes {
-  SQL_QUERY_RESULT = 'SQL_QUERY_RESULT'
+  SQL_QUERY_RESULT = 'SQL_QUERY_RESULT',
+  BLOCK_DATA_EDITOR = 'BLOCK_DATA_EDITOR'
 }
 
 // 表示任务的声明类型

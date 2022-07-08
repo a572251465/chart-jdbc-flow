@@ -1,4 +1,4 @@
-import { IBlockItem, INormalFn } from '@/types'
+import { IBlockItem, IEmitterTypes, INormalFn } from '@/types'
 import { ComputedRef, WritableComputedRef } from 'vue'
 import { useBlockData } from '@/hook/useBlockData'
 import { bindDom, emitter } from '@/utils'
@@ -38,8 +38,8 @@ export const mountedEvent = (
   })!
 
   // 用户编辑 block的data 触发此方法
-  emitter.on<string>(
-    'block-data-editor',
+  emitter.on<IEmitterTypes>(
+    IEmitterTypes.BLOCK_DATA_EDITOR,
     // @ts-ignore
     blockDataDispatcherJudge(allBlockItem)
   )
