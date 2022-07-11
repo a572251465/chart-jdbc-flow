@@ -13,7 +13,8 @@ export enum IBlockMenu {
 
 // 表示组件的分类
 export const enum IComponentBlockType {
-  PIE = 'pie'
+  PIE = 'pie',
+  BAR = 'bar'
 }
 
 // 表示发布订阅的分类
