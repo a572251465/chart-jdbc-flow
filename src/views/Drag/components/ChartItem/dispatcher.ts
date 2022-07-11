@@ -1,13 +1,17 @@
-import { IBlockItem, INormalFn } from '@/types'
-import { pieResolve } from '@/utils/resolve'
+import { IBlockItem, IComponentBlockType, INormalFn } from '@/types'
+import { pieResolve, barResolve } from '@/utils/resolve'
 import { useScheduler } from '@/hook/useScheduler'
 
 const [addSchedulerTask] = useScheduler()
-const strategy: Record<string, INormalFn> = {
-  pie: (el: HTMLDivElement, blockRef: IBlockItem) => {
+const strategy: Record<IComponentBlockType, INormalFn> = {
+  [IComponentBlockType.PIE]: (el: HTMLDivElement, blockRef: IBlockItem) => {
     const { data, options, paramKey } = blockRef
     // 如果是mounted 第一次渲染
     pieResolve.drawPie(el, pieResolve.resolvePieData(data, options, paramKey))
+  },
+  [IComponentBlockType.BAR]: (el: HTMLDivElement, blockRef: IBlockItem) => {
+    const { data, options, paramKey } = blockRef
+    barResolve.drawBar(el, barResolve.resolveBarData(data, options, paramKey))
   }
 }
 
