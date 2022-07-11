@@ -3,6 +3,8 @@ import { ComputedRef, WritableComputedRef } from 'vue'
 import { useBlockData } from '@/hook/useBlockData'
 import { bindDom, emitter } from '@/utils'
 import { setCopyBlock } from '@/utils/editor'
+import { VuMessageBox } from 'vu-design-plus'
+import { ElNotification } from 'element-plus'
 
 /**
  * @author lihh
@@ -52,6 +54,20 @@ export const mountedEvent = (
       if (e.keyCode === 67 && lastSelectedBlock.value) {
         setCopyBlock(lastSelectedBlock.value)
       }
+    }
+
+    // 判断是否要删除
+    if (e.keyCode === 46) {
+      const focusIds = allBlockItem.value
+        .filter((item) => item.isFocus)
+        .map((item) => item.createDomId)
+      const cb = () => {
+        allBlockItem.value = allBlockItem.value.filter(
+          (item) => !focusIds.includes(item.createDomId)
+        )
+        ElNotification.success('删除成功')
+      }
+      VuMessageBox.delete('确定要删除选中的组件吗?', { callback: cb })
     }
   })!
   unBindDom.push(unBDom, unBDom1)
