@@ -2,6 +2,7 @@ import { defineComponent, PropType } from 'vue'
 import { IBlockItem, IBlockMenu } from '@/types'
 import '@/views/Drag/components/index.less'
 import { ElTooltip } from 'element-plus'
+import BlockResize from '@/views/Drag/components/BlockResize'
 import { chartItemHack } from '@/views/Drag/components/ChartItem/chartItem-hack'
 
 export default defineComponent({
@@ -66,6 +67,8 @@ export default defineComponent({
             ))}
           </div>
         ) : null}
+        {/*  绘制可以拖拽的节点 */}
+        {curBlockItem.value.isFocus ? <BlockResize /> : null}
         {/* 图表渲染el*/}
         <div
           ref={drawContainerRef}

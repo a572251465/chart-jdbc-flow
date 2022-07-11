@@ -1,0 +1,57 @@
+.block-resize {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+  border-radius: 50%;
+  z-index: 1000;
+  user-select: none;
+}
+
+.block-resize-top {
+  top: -4px;
+  left: calc(50% - 4px);
+  cursor: n-resize;
+}
+
+.block-resize-bottom {
+  bottom: -4px;
+  left: calc(50% - 4px);
+  cursor: s-resize;
+}
+
+.block-resize-left {
+  top: calc(50% - 4px);
+  left: -4px;
+  cursor: w-resize;
+}
+
+.block-resize-right {
+  top: calc(50% - 4px);
+  right: -4px;
+  cursor: e-resize;
+}
+
+.block-resize-top-left {
+  top: -4px;
+  left: -4px;
+  cursor: nw-resize;
+}
+
+.block-resize-top-right {
+  top: -4px;
+  right: -4px;
+  cursor: ne-resize;
+}
+
+.block-resize-bottom-left {
+  bottom: -4px;
+  left: -4px;
+  cursor: sw-resize;
+}
+
+.block-resize-bottom-right {
+  bottom: -4px;
+  right: -4px;
+  cursor: se-resize;
+}
