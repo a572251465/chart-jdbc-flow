@@ -1,4 +1,9 @@
 import * as echarts from 'echarts'
+import { EChartsType } from 'echarts'
+import { compareArray } from '@/utils'
+
+// 表示上次容器的大小
+let prevContainerSize = [0, 0] as [number, number]
 
 /**
  * @author lihh
@@ -7,8 +12,21 @@ import * as echarts from 'echarts'
  * @param options 传递的饼状图的参数
  */
 export const drawPie = (el: HTMLDivElement, options: any) => {
-  const myChart = echarts.init(el)
-  myChart.setOption(options)
+  // 容器大小
+  const containerSize = [el.clientWidth, el.clientHeight] as [number, number],
+    isSizeChange = compareArray(prevContainerSize, containerSize)
+  if (!isSizeChange) {
+    prevContainerSize = containerSize
+    el.removeAttribute('_echarts_instance_')
+  }
+
+  let myChart: EChartsType | null
+  const instance = echarts.getInstanceByDom(el)
+  if (instance === null || instance === undefined) {
+    myChart = echarts.init(el)
+  }
+  // @ts-ignore
+  if (myChart) myChart.setOption(options)
 }
 
 /**

@@ -68,7 +68,9 @@ export default defineComponent({
           </div>
         ) : null}
         {/*  绘制可以拖拽的节点 */}
-        {curBlockItem.value.isFocus ? <BlockResize /> : null}
+        {curBlockItem.value.isFocus ? (
+          <BlockResize curBlock={curBlockItem.value} />
+        ) : null}
         {/* 图表渲染el*/}
         <div
           ref={drawContainerRef}

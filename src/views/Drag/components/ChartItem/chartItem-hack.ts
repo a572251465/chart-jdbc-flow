@@ -49,9 +49,15 @@ export const chartItemHack = (props: IProps, emit: IEmit) => {
 
   // 编辑数据变化 重新渲染
   watch(
-    () => curBlockItem.value.data,
+    [
+      () => curBlockItem.value.data,
+      () => curBlockItem.value.width,
+      () => curBlockItem.value.height
+    ],
     () => {
-      dispatcher(drawContainerRef.value!, curBlockItem.value)
+      requestAnimationFrame(() =>
+        dispatcher(drawContainerRef.value!, curBlockItem.value)
+      )
     },
     { deep: true }
   )

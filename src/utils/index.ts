@@ -3,6 +3,7 @@ import { ref } from 'vue'
 
 export { default as bindDom } from './dom'
 export { setCurrentEditorDrag, getCurrentEditorDrag } from './editor'
+export { compareArray } from './tools'
 
 // 表示计数counter
 let blockCounter = 1
