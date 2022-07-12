@@ -16,3 +16,10 @@ export const emitter = mitt()
 
 // 表示设置jsonEditor 提示
 export const jsonEditorTips = ref<string[]>([])
+
+// 将所有的json parse化
+export const allJsonParse = (arr: string[]) => arr.map((c) => JSON.parse(c))
+
+// 将所有的内容都 json stringify 化
+export const allJsonStringify = (...args: any[]) =>
+  args.map((c) => JSON.stringify(c))

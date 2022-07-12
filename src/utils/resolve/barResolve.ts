@@ -26,6 +26,9 @@ export const drawBar = (el: HTMLDivElement, options: any) => {
     myChart = echarts.init(el)
   }
   // @ts-ignore
+  if (instance && (myChart === undefined || myChart === null))
+    myChart = instance
+  // @ts-ignore
   if (myChart) myChart.setOption(options)
 }
 

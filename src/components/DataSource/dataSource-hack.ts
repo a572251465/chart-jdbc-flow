@@ -1,6 +1,7 @@
 import { computed, CSSProperties, reactive, ref } from 'vue'
-import { IBlockItem, IEmitterTypes } from '@/types'
+import { IBlockItem, IComponentBlockType, IEmitterTypes } from '@/types'
 import { emitter } from '@/utils'
+import { useEditorResolveData } from '@/hook/useEditorResolveData'
 
 type IProps = {
   readonly modelValue: boolean
@@ -35,10 +36,7 @@ export const dataSourceHack = (props: IProps, emits: IEmit) => {
   // 表示要转换的内容
   const transformCodeContent = computed<string>(() => {
     const { data, type } = props.currentEditorBlock
-    if (type === 'pie') {
-      return data[2]
-    }
-    return ''
+    return useEditorResolveData(data, type) || ''
   })
 
   /**

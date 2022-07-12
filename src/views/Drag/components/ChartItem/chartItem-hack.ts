@@ -1,6 +1,7 @@
 import { IBlockItem, IBlockMenu } from '@/types'
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { dispatcher } from '@/views/Drag/components/ChartItem/dispatcher'
+import { compareArray } from '@/utils'
 
 type IProps = {
   block: IBlockItem
@@ -54,12 +55,14 @@ export const chartItemHack = (props: IProps, emit: IEmit) => {
       () => curBlockItem.value.width,
       () => curBlockItem.value.height
     ],
-    () => {
+    (res1, res2) => {
+      // 自己通过深度筛选 是否相等
+      if (compareArray(res1, res2)) return false
+
       requestAnimationFrame(() =>
         dispatcher(drawContainerRef.value!, curBlockItem.value)
       )
-    },
-    { deep: true }
+    }
   )
 
   /**

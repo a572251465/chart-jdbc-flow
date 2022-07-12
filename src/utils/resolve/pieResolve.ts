@@ -25,6 +25,10 @@ export const drawPie = (el: HTMLDivElement, options: any) => {
   if (instance === null || instance === undefined) {
     myChart = echarts.init(el)
   }
+  // 补丁措施
+  // @ts-ignore
+  if (instance && (myChart === undefined || myChart === null))
+    myChart = instance
   // @ts-ignore
   if (myChart) myChart.setOption(options)
 }

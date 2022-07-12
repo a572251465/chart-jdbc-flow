@@ -1,4 +1,5 @@
-import { IBlockItem } from '@/types'
+import { IBlockItem, IComponentBlockType } from '@/types'
+import { allJsonStringify } from '@/utils'
 
 /**
  * @author lihh
@@ -14,6 +15,19 @@ const pieDataResolve = (
   const { data: targetData } = item
 
   item.data = [targetData[0], JSON.stringify(names), JSON.stringify(data)]
+}
+
+/**
+ * @author lihh
+ * @description 解析bar图表的数据
+ * @param item 修改的item数据
+ * @param data 传递的数据
+ */
+const barDataResolve = (
+  item: IBlockItem,
+  data: { title: string[]; horizontal: any[]; vertical: any[] }
+) => {
+  item.data = allJsonStringify(data.title, data.horizontal, data.vertical)
 }
 
 /**
@@ -34,8 +48,11 @@ export const useBlockData = (
 
   const { type } = curItem
   switch (type) {
-    case 'pie':
+    case IComponentBlockType.PIE:
       pieDataResolve(curItem, JSON.parse(content))
+      break
+    case IComponentBlockType.BAR:
+      barDataResolve(curItem, JSON.parse(content))
       break
     default:
       return
