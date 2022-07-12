@@ -55,7 +55,7 @@ const getBaseOptions = () => `return (
     ],
     "series": [
         {
-            "name": "直接访问",
+            "name": name[0],
             "type": "bar",
             "barWidth": "60%",
             "data": data1

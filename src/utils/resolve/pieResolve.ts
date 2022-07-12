@@ -1,6 +1,6 @@
 import * as echarts from 'echarts'
 import { EChartsType } from 'echarts'
-import { compareArray } from '@/utils'
+import { allJsonParse, compareArray } from '@/utils'
 
 // 表示上次容器的大小
 let prevContainerSize = [0, 0] as [number, number]
@@ -46,7 +46,7 @@ export const resolvePieData = (
   paramKey: string[]
 ) => {
   const fn = new Function(...paramKey, returnBody)
-  return fn(...data.map((c) => JSON.parse(c)))
+  return fn(...allJsonParse(data))
 }
 
 export const pieResolve = {
