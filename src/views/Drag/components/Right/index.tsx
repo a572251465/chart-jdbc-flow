@@ -25,13 +25,23 @@ export default defineComponent({
       editorRef,
       singleBlockMenuDispatcher,
       dataSourceShowFlag,
-      currentEditorBlock
+      currentEditorBlock,
+      dragContainerClickOrRightClickHandle,
+      rightContextStyles,
+      rightContextInfo,
+      pasteComponentHandle
     } = rightHack(props, ctx)
 
     return () => (
       <div class="drag-right">
         <div class="drag-right-container">
-          <div class="drag-right-container-inner" ref={editorRef}>
+          <div
+            class="drag-right-container-inner"
+            onContextmenu={(e) =>
+              dragContainerClickOrRightClickHandle(e, 'contextmenu')
+            }
+            onClick={(e) => dragContainerClickOrRightClickHandle(e, 'click')}
+            ref={editorRef}>
             {allBlockItem.value.map((item) => (
               <ChartItem
                 key={item.createDomId}
@@ -48,11 +58,24 @@ export default defineComponent({
             {markLine.y !== null && (
               <div class="line-y" style={{ top: markLine.y + 'px' }}></div>
             )}
+
+            {/*  右击菜单弹框 */}
+            {rightContextInfo.showFlag ? (
+              <ul class="right-click-dialog" style={rightContextStyles.value}>
+                <li onClick={() => pasteComponentHandle()}>
+                  <i class="iconfont icon-fuzhi"></i>
+                  <span>粘贴</span>
+                </li>
+              </ul>
+            ) : null}
           </div>
         </div>
 
         {/*  数据源弹框 */}
-        <DataSourceComponent currentEditorBlock = {currentEditorBlock.value} v-model={dataSourceShowFlag.value} />
+        <DataSourceComponent
+          currentEditorBlock={currentEditorBlock.value}
+          v-model={dataSourceShowFlag.value}
+        />
       </div>
     )
   }

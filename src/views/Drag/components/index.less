@@ -40,6 +40,27 @@
       height: 90%;
     }
 
+    .right-click-dialog {
+      position: fixed;
+      width: 100px;
+
+      li {
+        background: #282a2e;
+        font-size: 14px;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-style: italic;
+
+        & > span {
+          margin-left: 5px;
+        }
+
+        &:hover {
+          background: #35373a;
+        }
+      }
+    }
+
     .line-x {
       position: absolute;
       top: 0;

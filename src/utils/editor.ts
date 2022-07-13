@@ -1,18 +1,18 @@
 // 表示当前画布dom
 import { IBlockItem, IComponentBlockType } from '@/types'
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 
 let editorDragDom: null | HTMLDivElement = null
 // 表示复制待完成的组件
-let copyToBeCompletedBlockInfo: {
+let copyToBeCompletedBlockInfo = reactive<{
   block: IBlockItem | null
   x: number
   y: number
-} = {
+}>({
   block: null,
   x: 0,
   y: 0
-}
+})
 // 表示编辑的当前组件的类型
 let currentEditorComponentType = ref<IComponentBlockType>(
   IComponentBlockType.PIE

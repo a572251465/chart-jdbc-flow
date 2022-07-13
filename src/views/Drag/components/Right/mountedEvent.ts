@@ -1,10 +1,12 @@
 import { IBlockItem, IEmitterTypes, INormalFn } from '@/types'
 import { ComputedRef, WritableComputedRef } from 'vue'
 import { useBlockData } from '@/hook/useBlockData'
-import { bindDom, emitter } from '@/utils'
-import { setCopyBlock } from '@/utils/editor'
+import { bindDom, emitter, genKey } from '@/utils'
+import { getCopyBlock, setCopyBlock } from '@/utils/editor'
 import { VuMessageBox } from 'vu-design-plus'
 import { ElNotification } from 'element-plus'
+import { defaultBlockItem } from '@/views/Drag/editor-data'
+import { pasteComponentHandle } from '@/views/Drag/components/Right/right-hack'
 
 /**
  * @author lihh
@@ -53,6 +55,13 @@ export const mountedEvent = (
       // 判断是否是点击 复制键
       if (e.keyCode === 67 && lastSelectedBlock.value) {
         setCopyBlock(lastSelectedBlock.value)
+        ElNotification.success('组件复制成功')
+      }
+
+      // 判断是否点击粘贴键
+      const copyBlock = getCopyBlock()
+      if (e.keyCode === 86 && copyBlock.block && copyBlock.x && copyBlock.y) {
+        pasteComponentHandle(allBlockItem)()
       }
     }
 

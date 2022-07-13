@@ -1,12 +1,27 @@
-import { computed, onBeforeMount, onMounted, ref } from 'vue'
+import {
+  computed,
+  CSSProperties,
+  onBeforeMount,
+  onMounted,
+  reactive,
+  ref,
+  WritableComputedRef
+} from 'vue'
 import { IBlockItem, IBlockMenu, IEmitterTypes, INormalFn } from '@/types'
 import { useFocusAboutBlock } from '@/hook/useFocusAboutBlock'
 import { useBlockDragMove } from '@/hook/useBlockDragMove'
-import { emitter, jsonEditorTips, setCurrentEditorDrag } from '@/utils'
+import { emitter, genKey, jsonEditorTips, setCurrentEditorDrag } from '@/utils'
 import { useTips } from '@/hook/useTips'
 import { blockMenuStrategy } from '@/views/Drag/components/Right/menuDispatcher'
 import { mountedEvent } from '@/views/Drag/components/Right/mountedEvent'
-import { setCurrentComponentType, setSelectedBlock } from '@/utils/editor'
+import {
+  getCopyBlock,
+  setCopyBlockPos,
+  setCurrentComponentType,
+  setSelectedBlock
+} from '@/utils/editor'
+import { defaultBlockItem } from '@/views/Drag/editor-data'
+import { ElNotification } from 'element-plus/es'
 
 type IProps = { readonly modelValue: IBlockItem[] | undefined }
 
@@ -18,6 +33,38 @@ let unBindDom: INormalFn[] = []
 const dataSourceShowFlag = ref<boolean>(false)
 // 表示当前编辑的block
 const currentEditorBlock = ref<IBlockItem | null>(null)
+// 表示右击菜单的配置属性
+const rightContextInfo = reactive<{ x: number; y: number; showFlag: boolean }>({
+  x: 0,
+  y: 0,
+  showFlag: false
+})
+const rightContextStyles = computed<CSSProperties>(() => ({
+  left: `${rightContextInfo.x}px`,
+  top: `${rightContextInfo.y}px`
+}))
+
+/**
+ * @author lihh
+ * @description 表示粘贴组件处理
+ * @param allBlockItem 全部的组件
+ */
+export const pasteComponentHandle =
+  (allBlockItem: WritableComputedRef<IBlockItem[]>) => () => {
+    const copyBlock = getCopyBlock()
+    const newAllBlock = [
+      Object.assign({}, defaultBlockItem, {
+        ...copyBlock.block,
+        top: copyBlock.x,
+        left: copyBlock.y,
+        createDomId: genKey()
+      }),
+      ...allBlockItem.value
+    ]
+    allBlockItem.value = newAllBlock
+    ElNotification.success('组件粘贴成功')
+    rightContextInfo.showFlag = false
+  }
 
 /**
  * @author lihh
@@ -71,6 +118,30 @@ export const rightHack = (props: IProps, ctx: any) => {
 
   /**
    * @author lihh
+   * @description 表示画布容器点击事件/ 或是右击事件
+   * @param e 表示鼠标点击事件
+   * @param type 表示事件触发类型 contextmenu/ click
+   */
+  const dragContainerClickOrRightClickHandle = (
+    e: MouseEvent,
+    type: string
+  ) => {
+    const { offsetX, x, y, offsetY } = e
+    // 保存鼠标的位置
+    setCopyBlockPos(offsetY, offsetX)
+
+    // 判断是否是右击事件
+    if (type === 'contextmenu' && getCopyBlock().block) {
+      rightContextInfo.x = x
+      rightContextInfo.y = y
+      rightContextInfo.showFlag = true
+    } else {
+      rightContextInfo.showFlag = false
+    }
+  }
+
+  /**
+   * @author lihh
    * @description 点击block元素上方菜单 触发事件
    * @param type 表示点击类型
    * @param id 表示要操作的id
@@ -117,6 +188,10 @@ export const rightHack = (props: IProps, ctx: any) => {
     singleBlockClickHandle,
     singleBlockMenuDispatcher,
     dataSourceShowFlag,
-    currentEditorBlock
+    currentEditorBlock,
+    dragContainerClickOrRightClickHandle,
+    rightContextStyles,
+    rightContextInfo,
+    pasteComponentHandle: pasteComponentHandle(allBlockItem)
   }
 }
