@@ -14,8 +14,9 @@ interface IOptions {
 const selectList = reactive<IOptions[]>([])
 // 表示下拉选中的值
 const fields = reactive({
-  x: '',
-  s: ''
+  horizontal: '',
+  vertical: '',
+  name: ''
 })
 // 表示查询数据
 const sqlQueryResult = reactive<Record<string, any>[]>([])
@@ -35,25 +36,31 @@ emitter.on<IEmitterTypes>(IEmitterTypes.SQL_QUERY_RESULT, (value: string) => {
  * @description 映射图表数据
  */
 const mappingChartDataHandle = () => {
-  debugger
-  if (!fields.s || !fields.x) {
-    ElNotification.error('请选择类型或是值')
+  if (!fields.horizontal || !fields.vertical || !fields.name) {
+    ElNotification.error('请选择横轴/ 纵轴的值/ 索引名称')
     return
   }
 
   // 开始匹配数据
-  const { x, s } = fields,
-    result = [] as { value: any; name: string }[]
+  const { horizontal, vertical } = fields,
+    result = [] as { vertical: any; horizontal: string }[]
   sqlQueryResult.forEach((item) => {
     result.push({
-      value: item[s],
-      name: item[x]
+      vertical: item[vertical],
+      horizontal: item[horizontal]
     })
   })
 
+  // 整合数据
+  const data = {
+    title: [fields.name],
+    horizontal: result.map((item) => item.horizontal),
+    vertical: result.map((item) => item.vertical)
+  }
+
   const currentSelectedBlock = getSelectedBlock()
   emitter.emit(IEmitterTypes.BLOCK_DATA_EDITOR, [
-    JSON.stringify(result),
+    JSON.stringify(data),
     currentSelectedBlock.createDomId
   ])
 }
@@ -78,8 +85,13 @@ const resolvePropsDataHandle = () => {
       <div>说明</div>
     </li>
     <li class="pie-head pie-list">
-      <div>x</div>
-      <el-select v-model="fields.x" placeholder="请选择展示的类目">
+      <div>name</div>
+      <el-input placeholder="请输入索引名字" v-model="fields.name" />
+      <div>-</div>
+    </li>
+    <li class="pie-head pie-list">
+      <div>horizontal</div>
+      <el-select v-model="fields.horizontal" placeholder="请选择展示的类目">
         <el-option
           v-for="item in selectList"
           :key="item.value"
@@ -90,8 +102,8 @@ const resolvePropsDataHandle = () => {
       <div>类目</div>
     </li>
     <li class="pie-head pie-list">
-      <div>s</div>
-      <el-select v-model="fields.s" placeholder="请选择展示的值">
+      <div>vertical</div>
+      <el-select v-model="fields.vertical" placeholder="请选择展示的值">
         <el-option
           v-for="item in selectList"
           :key="item.value"
