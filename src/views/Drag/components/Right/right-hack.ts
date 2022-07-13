@@ -52,11 +52,12 @@ const rightContextStyles = computed<CSSProperties>(() => ({
 export const pasteComponentHandle =
   (allBlockItem: WritableComputedRef<IBlockItem[]>) => () => {
     const copyBlock = getCopyBlock()
+    const { width, height } = copyBlock.block!
     const newAllBlock = [
       Object.assign({}, defaultBlockItem, {
         ...copyBlock.block,
-        top: copyBlock.x,
-        left: copyBlock.y,
+        top: copyBlock.x - width / 2,
+        left: copyBlock.y - height / 2,
         createDomId: genKey()
       }),
       ...allBlockItem.value
