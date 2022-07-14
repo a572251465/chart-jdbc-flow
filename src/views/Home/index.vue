@@ -19,6 +19,7 @@ import LeftNav from '@/components/LeftNav/index.vue'
 .home-container {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .home-container-body {
