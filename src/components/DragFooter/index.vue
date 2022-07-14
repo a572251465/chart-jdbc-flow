@@ -29,7 +29,7 @@ const icons = [
   align-items: center;
 
   i {
-    margin: 0 15px;
+    margin: 0 12px;
     font-size: 20px;
     cursor: pointer;
   }
