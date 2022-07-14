@@ -25,13 +25,15 @@ const allBlockItem = ref<IBlockItem[]>(defaultBlocks)
 <style lang="less" scoped>
 .drag {
   width: 100%;
+  display: flex;
+  flex-direction: column;
 
   &-top {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     width: 100%;
-    height: calc(100% - 50px);
+    flex: 1;
   }
 
   &-bottom {
